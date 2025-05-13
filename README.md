@@ -1,14 +1,14 @@
-## pi-backend-paginas
+# pi-backend-paginas
 
-### Projeto Integrador Estética na Palma da Mão
+# Projeto Integrador Estética na Palma da Mão
 
 Este repositório contém o código do backend com páginas, desenvolvido em Django.
 
-### Equipe
+## Equipe
 - Bruna Soto Cardoso dos Santos  
 - Elania Cristina Peixoto  
 - Graciely Ferreira  
 - Rafael Souza dos Santos
 
-# Status do projeto
+### Status do projeto
 Em desenvolvimento.
