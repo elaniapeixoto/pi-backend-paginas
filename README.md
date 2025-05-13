@@ -10,5 +10,5 @@ Este repositório contém o código do backend com páginas, desenvolvido em Dja
 - Graciely Ferreira  
 - Rafael Souza dos Santos
 
-- # Status do projeto
+# Status do projeto
 Em desenvolvimento.
