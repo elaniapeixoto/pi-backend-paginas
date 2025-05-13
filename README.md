@@ -1,6 +1,8 @@
 # pi-backend-paginas
 
 # Projeto Integrador Estética na Palma da Mão
+## Data de Criação
+**Data de Criação**: 13 de Maio de 2025
 
 Este repositório contém o código do backend com páginas, desenvolvido em Django.
 
