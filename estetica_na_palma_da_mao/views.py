@@ -8,3 +8,6 @@ def agendamento(request):
 
 def cadastro(request):
     return render(request, 'cadastro.html')
+
+def procedimento(request):
+    return render(request, 'procedimento.html')
