@@ -1,193 +1,111 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Fornecedores</title>
+{% block title %}Cadastro de Fornecedores{% endblock %}
 
-    <!-- Fontes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+{% block content %}
+<form id="form">
+    <table style="background-color: #F8D36F; width: 50%; border: 2px solid #6C3241;" align="center">
+        <tr>
+            <th colspan="4" style="font-size: 150%;">Cadastro de Fornecedores</th>
+        </tr>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+        <tr>
+            <th align="left">Nome da empresa ou razão social:</th>
+            <td><input type="text" name="nome" id="nome"></td>
+        </tr>
+        <tr>
+            <th align="left">CNPJ:</th>
+            <td><input type="number" name="cnpj" id="cnpj"></td>
+        </tr>
+        <tr>
+            <th align="left">Rua:</th>
+            <td><input type="text" name="rua" id="rua"></td>
+            <th align="left">CEP:</th>
+            <td><input type="number" name="cep" id="cep"></td>
+        </tr>
+        <tr>
+            <th align="left">Cidade:</th>
+            <td><input type="text" name="cidade" id="cidade"></td>
+            <th>Estado:</th>
+            <td>
+                <select id="estado">
+                    <option></option>
+                    {% for uf in 'AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE
+                    TO'.split %}
+                    <option>{{ uf }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th align="left">Telefone:</th>
+            <td><input type="number" name="tell" id="tell"></td>
+            <th align="left">E-mail:</th>
+            <td><input type="email" name="email" id="email"></td>
+        </tr>
+        <tr>
+            <th align="left">Forma de pagamento:</th>
+            <td colspan="3">
+                <input type="radio" id="debito" name="forma_pagamento" value="debito"><label for="debito">Débito</label>
+                <input type="radio" id="credito" name="forma_pagamento" value="credito"><label
+                    for="credito">Crédito</label>
+                <input type="radio" id="boleto" name="forma_pagamento" value="boleto"><label for="boleto">Boleto</label>
+                <input type="radio" id="avista" name="forma_pagamento" value="avista"><label for="avista">À
+                    Vista</label>
+                <input type="radio" id="parcelado" name="forma_pagamento" value="parcelado"><label
+                    for="parcelado">Parcelado</label>
+            </td>
+        </tr>
+        <tr>
+            <th align="left">Quantas parcelas:</th>
+            <td><input type="number" name="parcelas" id="parcelas"></td>
+        </tr>
+        <tr>
+            <th align="left">Entrega:</th>
+            <td><input type="text" name="entrega" id="entrega"></td>
+            <th align="left">Custo de Frete:</th>
+            <td><input type="number" name="frete" id="frete"></td>
+        </tr>
+        <tr>
+            <th align="left">Site:</th>
+            <td colspan="3"><input type="text" name="site" id="site" style="width: 100%;"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><input type="submit" value="Salvar"></td>
+            <td colspan="2" align="center"><input type="reset" value="Cancelar"></td>
+        </tr>
+    </table>
+</form>
 
-    <style>
-        a {
-            color: black;
-            text-decoration: none;
-        }
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('form');
 
-        a:hover {
-            color: #6C3241;
-        }
-    </style>
-</head>
-
-<body style="margin-top: 5%; font-family: 'Josefin Sans', sans-serif;">
-
-    <header style="text-align: center;">
-        <img src="{% static 'img/logopamelahead.png' %}" width="10%">
-        <img src="{% static 'img/logopamelaletter.png' %}" width="40%">
-
-        <table align="center"
-            style="width: 50%; border-style: solid; border-color:#6C3241; border-width: 2px; background-color: #D2B048;">
-            <tr>
-                <th style="width: 33%;"><a href="{% url 'principal' %}">Início</a></th>
-                <th style="width: 33%;"><a href="{% url 'agendamento' %}">Agendamento</a></th>
-                <th style="width: 33%;"><a href="{% url 'principal' %}">Voltar</a></th>
-            </tr>
-        </table>
-    </header>
-
-    <form id="form">
-        <table style="background-color: #F8D36F; width: 50%; border: 2px solid #6C3241;" align="center">
-
-            <tr>
-                <th colspan="4" style="font-size: 150%;">Cadastro de Fornecedores</th>
-            </tr>
-
-            <tr>
-                <th align="left">Nome da empresa ou razão social:</th>
-                <td><input type="text" name="nome" id="nome"></td>
-            </tr>
-
-            <tr>
-                <th align="left">CNPJ:</th>
-                <td><input type="number" name="cnpj" id="cnpj"></td>
-            </tr>
-
-            <tr>
-                <th align="left">Rua:</th>
-                <td><input type="text" name="rua" id="rua"></td>
-                <th align="left">CEP:</th>
-                <td><input type="number" name="cep" id="cep"></td>
-            </tr>
-
-            <tr>
-                <th align="left">Cidade:</th>
-                <td><input type="text" name="cidade" id="cidade"></td>
-                <th>Estado:</th>
-                <td>
-                    <select id="estado">
-                        <option></option>
-                        <option>AC</option>
-                        <option>AL</option>
-                        <option>AP</option>
-                        <option>AM</option>
-                        <option>BA</option>
-                        <option>CE</option>
-                        <option>DF</option>
-                        <option>ES</option>
-                        <option>GO</option>
-                        <option>MA</option>
-                        <option>MT</option>
-                        <option>MS</option>
-                        <option>MG</option>
-                        <option>PA</option>
-                        <option>PB</option>
-                        <option>PR</option>
-                        <option>PE</option>
-                        <option>PI</option>
-                        <option>RJ</option>
-                        <option>RN</option>
-                        <option>RS</option>
-                        <option>RO</option>
-                        <option>RR</option>
-                        <option>SC</option>
-                        <option>SP</option>
-                        <option>SE</option>
-                        <option>TO</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <th align="left">Telefone:</th>
-                <td><input type="number" name="tell" id="tell"></td>
-                <th align="left">E-mail:</th>
-                <td><input type="email" name="email" id="email"></td>
-            </tr>
-
-            <tr>
-                <th align="left">Forma de pagamento:</th>
-                <td colspan="3">
-                    <input type="radio" id="debito" name="forma_pagamento" value="debito">
-                    <label for="debito">Débito</label>
-                    <input type="radio" id="credito" name="forma_pagamento" value="credito">
-                    <label for="credito">Crédito</label>
-                    <input type="radio" id="boleto" name="forma_pagamento" value="boleto">
-                    <label for="boleto">Boleto</label>
-                    <input type="radio" id="avista" name="forma_pagamento" value="avista">
-                    <label for="avista">À Vista</label>
-                    <input type="radio" id="parcelado" name="forma_pagamento" value="parcelado">
-                    <label for="parcelado">Parcelado</label>
-                </td>
-            </tr>
-
-            <tr>
-                <th align="left">Quantas parcelas:</th>
-                <td><input type="number" name="parcelas" id="parcelas"></td>
-            </tr>
-
-            <tr>
-                <th align="left">Entrega:</th>
-                <td><input type="text" name="entrega" id="entrega"></td>
-                <th align="left">Custo de Frete:</th>
-                <td><input type="number" name="frete" id="frete"></td>
-            </tr>
-
-            <tr>
-                <th align="left">Site:</th>
-                <td colspan="3"><input type="text" name="site" id="site" style="width: 100%;"></td>
-            </tr>
-
-            <tr>
-                <td colspan="2" align="center">
-                    <input type="submit" value="Salvar">
-                </td>
-                <td colspan="2" align="center">
-                    <input type="reset" value="Cancelar">
-                </td>
-            </tr>
-
-        </table>
-    </form>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('form');
-
-            form.addEventListener('submit', event => {
-                const requiredFields = ['nome', 'cnpj', 'rua', 'cep', 'cidade', 'tell', 'email'];
-                for (const id of requiredFields) {
-                    const field = document.getElementById(id);
-                    if (!field.value) {
-                        alert(`Preencha o campo: ${field.name}`);
-                        event.preventDefault();
-                        return;
-                    }
-                }
-
-                const forma = document.querySelectorAll('input[name="forma_pagamento"]:checked');
-                if (forma.length === 0) {
-                    alert("Escolha uma forma de pagamento.");
+        form.addEventListener('submit', event => {
+            const requiredFields = ['nome', 'cnpj', 'rua', 'cep', 'cidade', 'tell', 'email'];
+            for (const id of requiredFields) {
+                const field = document.getElementById(id);
+                if (!field.value) {
+                    alert(`Preencha o campo: ${field.name}`);
                     event.preventDefault();
                     return;
                 }
+            }
 
-                const parcelado = document.getElementById('parcelado');
-                const parcelas = document.getElementById('parcelas');
-                if (parcelado.checked && !parcelas.value) {
-                    alert("Informe o número de parcelas.");
-                    event.preventDefault();
-                }
-            });
+            const forma = document.querySelectorAll('input[name="forma_pagamento"]:checked');
+            if (forma.length === 0) {
+                alert("Escolha uma forma de pagamento.");
+                event.preventDefault();
+                return;
+            }
+
+            const parcelado = document.getElementById('parcelado');
+            const parcelas = document.getElementById('parcelas');
+            if (parcelado.checked && !parcelas.value) {
+                alert("Informe o número de parcelas.");
+                event.preventDefault();
+            }
         });
-    </script>
-
-</body>
-
-</html>
+    });
+</script>
+{% endblock %}
