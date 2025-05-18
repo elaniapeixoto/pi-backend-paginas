@@ -9,8 +9,8 @@ def agendamento(request):
     return render(request, "agendamento.html")
 
 
-def cadastro(request):
-    return render(request, "cadastro.html")
+def cadastro_pessoa(request):
+    return render(request, "cadastro_pessoa.html")
 
 
 def procedimento(request):
@@ -19,6 +19,14 @@ def procedimento(request):
 
 def cadastro_fornecedor(request):
     return render(request, "cadastro_fornecedor.html")
+
+
+def login(request):
+    return render(request, "login.html")
+
+
+def menu(request):
+    return render(request, "menu.html")
 
 
 def cadastro_fornecedor(request):
