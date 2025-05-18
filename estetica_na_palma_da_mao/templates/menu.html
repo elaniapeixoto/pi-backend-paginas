@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block titulo %} Menu {% endblock %}
+
+{% block content %}
+
+
+<table
+style="background-color: #d2b048; border-style: solid; border-color:  #6C3241; border-width: 2px; width: 50%; margin: 0 auto; text-align: left;"
+align="center">
+<form>
+    <tr>
+        <th align="center" width="15%" height="10%" colspan="5">
+            <h2>Menu</h2>
+        </th>
+    </tr>
+
+    <tr align="center">
+        <th><a href="{% url 'cadastro_pessoa'%}">Cadastro de pessoas</a></th>
+        <th><a href="cadastro_fornecedores">Cadastro de fornecedores</a></th>
+        <th><a href="agendamento">Agendamentos cadastrados</a></th>
+        <th><a href="procedimento">Relatório de procedimentos</a></th>
+
+    </tr>
+
+
+
+
+
+
+</form>
+</table>
+
+
+{% endblock %}
