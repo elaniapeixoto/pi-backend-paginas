@@ -17,10 +17,6 @@ def procedimento(request):
     return render(request, "procedimento.html")
 
 
-def cadastro_fornecedor(request):
-    return render(request, "cadastro_fornecedor.html")
-
-
 def login(request):
     return render(request, "login.html")
 
