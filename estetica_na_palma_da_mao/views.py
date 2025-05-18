@@ -19,3 +19,10 @@ def procedimento(request):
 
 def cadastro_fornecedor(request):
     return render(request, "cadastro_fornecedor.html")
+
+def login(request):
+    return render(request, "login.html")
+
+def menu(request):
+    return render(request, "menu.html")
+
