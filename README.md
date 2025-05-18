@@ -1,5 +1,7 @@
 💇‍♀️ Projeto Integrador – Backend com Django
+
 Data de Criação: 13 de maio de 2025
+
 Status do Projeto: 🚧 Em desenvolvimento
 
 Este repositório contém o código do backend com páginas web desenvolvido em Django, como parte do Projeto Integrador do curso de Tecnologia em Análise e Desenvolvimento de Sistemas.
