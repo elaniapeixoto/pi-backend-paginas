@@ -48,3 +48,6 @@ Rafael Souza dos Santos
 
 Este projeto está sendo desenvolvido em grupo e faz parte das atividades avaliativas da disciplina de Programação Back-end.
 Todos os membros estão contribuindo por meio de commits individuais no GitHub.
+Para acessar o login 
+-Usuario = admin
+-Senha = admin
