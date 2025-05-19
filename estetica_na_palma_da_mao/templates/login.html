@@ -21,7 +21,7 @@
             <td colspan="2"><input type="password" id="senha" name="senha"></td>
         </tr>
         <tr align="center">
-            <td align="left"><input type="submit" value="Acessar" onclick="logar(); return false"></td>
+            <td align="left"><input type="submit" value="Acessar" onclick="logar();"></td>
             <td>&nbsp;</td>
             <td align="right"><input type="reset" value="Cancelar"></td>
         </tr>
@@ -57,12 +57,14 @@
         if (email.value.trim() === "") {
             alert("Preencha um usuário válido");
             return;
-        } else if (senha.value === "") {
+        } 
+        if (senha.value === "") {
             alert("Preencha a senha");
             return;
-        } else if (login == "admin" && senha.value == "admin") {
+        } 
+        if (login == "admin" && senha.value == "admin") {
             alert("Bem vindo " + login);
-            location.href = "{% url 'menu' %}";
+            location.href = "menu/";
         }
     }
 </script>

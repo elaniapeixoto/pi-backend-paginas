@@ -3,16 +3,13 @@
 {% load static %}
 
 
+{% block title %}Cadastro de procedimentos{% endblock %}
 
 {% block content %}
 
 
-    <table style="background-color: #F8D36F; font-family: Verdana, Geneva, Tahoma, sans-serif;" align="center" >
+<table style="background-color: #F8D36F; width: 50%; border: 2px solid #6C3241;" align="center">
         <form>
-            <tr>
-                <th colspan="3">{% block title %}Cadastro de procedimentos{% endblock %}</th>
-            </tr>
-
             <tr>
                 <th colspan="1" align="left"><label for="nomeP">Nome do procedimento:</label></th>
                 <td colspan="1"><input type="text" id="nomeP" name="nomeP"></td>
