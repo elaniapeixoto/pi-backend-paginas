@@ -28,10 +28,9 @@
             <td><input type="text" name="cidade" id="cidade"></td>
             <th>Estado:</th>
             <td>
-                <select id="estado">
+                <select id="estado" name="estado">
                     <option></option>
-                    {% for uf in 'AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE
-                    TO'.split %}
+                    {% for uf in estados %}
                     <option>{{ uf }}</option>
                     {% endfor %}
                 </select>
