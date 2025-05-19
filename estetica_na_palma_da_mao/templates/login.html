@@ -21,7 +21,7 @@
             <td colspan="2"><input type="password" id="senha" name="senha"></td>
         </tr>
         <tr align="center">
-            <td align="left"><input type="submit" value="Acessar" onclick="logar();"></td>
+            <td align="left"><input type="button" value="Acessar" onclick="logar();"></td>
             <td>&nbsp;</td>
             <td align="right"><input type="reset" value="Cancelar"></td>
         </tr>
@@ -52,19 +52,23 @@
     });
 
     function logar() {
-        const login = email.value;
+        const email = document.getElementById('email').value.trim();
+        const senha = document.getElementById('senha').value;
 
-        if (email.value.trim() === "") {
-            alert("Preencha um usuário válido");
+        
+        if (!email) {
+            alert("Preencha o usuário!");
             return;
-        } 
-        if (senha.value === "") {
-            alert("Preencha a senha");
+        }
+        if (!senha) {
+            alert("Preencha a senha!");
             return;
-        } 
-        if (login == "admin" && senha.value == "admin") {
-            alert("Bem vindo " + login);
-            location.href = "menu/";
+        }
+
+        if (email === "admin" && senha === "admin") {
+            window.location.href = "/menu/";  
+        } else {
+            alert("Usuário ou senha incorretos!");
         }
     }
 </script>

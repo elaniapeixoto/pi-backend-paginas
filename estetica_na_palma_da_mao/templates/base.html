@@ -52,7 +52,7 @@
                     <h2>{% block title %} Bem vindo! {% endblock %}</h2>
                 </th>
             </tr>
-            {% if request.path != '' %}
+            {% if request.path == '' %}
                 <tr>
                     <th><a href="{% url 'cadastro_pessoa' %}">Cadastro de pessoas</a></th>
                     <th><a href="{% url 'cadastro_fornecedor' %}">Cadastro de fornecedores</a></th>
