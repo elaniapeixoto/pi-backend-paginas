@@ -8,19 +8,30 @@
 
 
 <table
-        style="background-color: #F8D36F;padding: 20px; width: 50%; border-style: solid; border-color:  #6C3241; border-width: 2px; text-align: center;"
-        align="center">
-        <tr>
-            <th><a href="{% url 'agendamento'%}">Cadastro de gendamentos</a></th>
-        </tr>
-        <tr>
-            <td>
-                <h3><a href="login"> Login </a></h3>
-            </td>
-        </tr>
+style="background-color: #d2b048; border-style: solid; border-color:  #6C3241; border-width: 2px; width: 50%; margin: 0 auto; text-align: left;"
+align="center">
+<form>
+    <tr>
+        <th align="center" width="15%" height="10%" colspan="5">
+            <h2>Menu</h2>
+        </th>
+    </tr>
+
+    <tr align="center">
+        <th><a href="{% url 'cadastro_pessoa'%}">Cadastro de pessoas</a></th>
+        <th><a href="{% url 'cadastro_fornecedor'%}">Cadastro de fornecedores</a></th>
+        <th><a href="{% url 'agendamento'%}">Agendamentos cadastrados</a></th>
+        <th><a href="{% url 'procedimento'%}">Relatório de procedimentos</a></th>
+
+    </tr>
 
 
-    </table>
+
+
+
+
+</form>
+</table>
 
 
 {% endblock %}

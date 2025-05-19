@@ -5,7 +5,9 @@
 {% block content %}
 <form id="form">
     <table style="background-color: #F8D36F; width: 50%; border: 2px solid #6C3241;" align="center">
-
+        <tr>
+            <th colspan="4" style="font-size: 150%;">Cadastro de Fornecedores</th>
+        </tr>
 
         <tr>
             <th align="left">Nome da empresa ou razão social:</th>
@@ -26,10 +28,12 @@
             <td><input type="text" name="cidade" id="cidade"></td>
             <th>Estado:</th>
             <td>
-                <select id="estado" name="estado">
+                <select id="estado">
                     <option></option>
-                    {% for uf in estados %}
-                    <option>{{uf}}</option>
+                    {% for uf in 'AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE
+                    TO'.split %}
+                    <option>{{ uf }}</option>
+                    {% endfor %}
                 </select>
             </td>
         </tr>
