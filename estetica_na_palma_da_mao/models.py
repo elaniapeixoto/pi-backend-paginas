@@ -1,5 +1,17 @@
 from django.db import models
 
+
+"""
+Classes necessárias:
+    clientes
+    afiliados
+    alugueis
+    produtos
+    vendas
+    
+"""
+
+
 class clientes(models.Model):
     
     ESTADOS = {
@@ -32,8 +44,6 @@ class clientes(models.Model):
         "TO" : "Tocantins"
     }
     
-    
-    # TODO CRIAR CLASSE AFILIADOS QUE HERDA DE CLIENTE 
     nome = models.CharField(("nome"), max_length=50, null= False)
     cpf = models.CharField("cpf", max_length=11, null= False )
     numero = models.IntegerField("número para contato")
@@ -42,6 +52,11 @@ class clientes(models.Model):
     cep = models.CharField(("cep"), max_length=8)
     rua = models.CharField(("rua"), max_length=100)
     cidade = models.CharField(("cidade"), max_length=35)
+    # UTILIZANDO ARRAY AFIM DE TESTAR A FUNCIONABILIDADE DO DJANGO 
+    # E COMO SERA O USO DO ARMAZENAMENTO COMPARADO AO INT
     estado = models.CharField(("estado"), choices= ESTADOS)
     observacoes = models.TextField(("observações"))
     
+    # TALVEZ SEJA MELHOR UMA CLASSE EMPREGADO E UM PARA OS "AFILIADOS"
+class afiliados(models.Model):
+    tipo = models.CharField(("tipo"), max_length=50)
