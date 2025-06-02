@@ -3,16 +3,20 @@ from django.db import models
 
 """
 Classes necessárias:
-    clientes
-    afiliados
-    alugueis
+    usuario
+    clientes 
+    funcionarios
+    locador
+    fornecedores
     produtos
     vendas
-    
+    agenda
+    procedimentos
+   
 """
 
 
-class clientes(models.Model):
+class Cliente(models.Model):
     
     ESTADOS = {
         "AC" : "Acre",
@@ -44,6 +48,11 @@ class clientes(models.Model):
         "TO" : "Tocantins"
     }
     
+    TIPO = [
+        ("FUNCIONARIO", "Funcionario"),
+        ("LOCADOR", "Locador")
+    ]
+    
     nome = models.CharField(("nome"), max_length=50, null= False)
     cpf = models.CharField("cpf", max_length=11, null= False )
     numero = models.IntegerField("número para contato")
@@ -55,8 +64,21 @@ class clientes(models.Model):
     # UTILIZANDO ARRAY AFIM DE TESTAR A FUNCIONABILIDADE DO DJANGO 
     # E COMO SERA O USO DO ARMAZENAMENTO COMPARADO AO INT
     estado = models.CharField(("estado"), choices= ESTADOS)
+    tipo = models.CharField(("tipo"), choices= TIPO, null= True)
     observacoes = models.TextField(("observações"))
     
-    # TALVEZ SEJA MELHOR UMA CLASSE EMPREGADO E UM PARA OS "AFILIADOS"
-class afiliados(models.Model):
-    tipo = models.CharField(("tipo"), max_length=50)
+    # TEM MUITOS CARGOS? TEM VARIAÇÃO DE PERMISSÕES ENTRE CARGOS?
+class Funcionario(models.Model):
+    cliente = models.OneToOneField("Cliente", verbose_name=("cliente"), on_delete=models.CASCADE)
+    cargo = models.ForeignKey(Cargos, verbose_name=("cargos"), on_delete=models.PROTECT)
+    salario = models.DecimalField(("salário"), max_digits=5, decimal_places=2)
+    pis = models.CharField(("pis"), max_length=13)
+    entrada = models.DateField(("data de entrada"), auto_now=False, auto_now_add=True)
+    saida = models.DateField(("data de saida"), auto_now=False, auto_now_add=False)
+    
+class Locador(models.Model):
+    cliente = models.OneToOneField( Cliente, verbose_name=("locador"), on_delete=models.CASCADE)
+    valor_aluguel = models.DecimalField(("valor do aluguel"), max_digits=5, decimal_places=2)
+    inicio_contrato = models.DateField(("inicio do contrato"), auto_now=False, auto_now_add=False)
+    fim_contrato = models.DateField(("fim do contrato"), auto_now=False, auto_now_add=False)
+    
