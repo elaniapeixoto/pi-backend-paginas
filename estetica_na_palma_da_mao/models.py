@@ -84,27 +84,15 @@ class Locador(models.Model):
     
 class Procedimento(models.Model):
 
-    PROFISSIONAIS = {
-        "PAMELA": "PAMELA",
-        "CARLINE": "CARLINE",
-        "ANA PAULA": "ANA PAULA",
-    }
-
     procedimento = models.CharField(("procedimento"), max_length=50, unique=True, null=False)
     valor = models.DecimalField(("valor"), max_digits=5, decimal_places=2)
-    profissional = models.CharField(("profissional"), choices=PROFISSIONAIS, null=False)
+    profissionais = models.ManyToManyField(Funcionario, related_name="profissional_que_realiza", null=False) 
     tempo_medio = models.DurationField(("Tempo Médio do Procedimento"), null=True, blank=True)
 
 class Agendamento(models.Model):
 
-    PROFISSIONAIS = {
-        "PAMELA": "PAMELA",
-        "CARLINE": "CARLINE",
-        "ANA PAULA": "ANA PAULA",
-    }
-    nome = models.CharField(("nome"), max_length=50, null= False)
-    procedimento = models.CharField(("procedimento"), max_length=50, null=False)
-    profissional = models.CharField(("profissional"), choices=PROFISSIONAIS, null=False)
+    cliente = models.ForeignKey(Cliente, verbose_name=("cliente"), on_delete=models.CASCADE)
+    procedimento = models.ForeignKey(Procedimento, verbose_name=("procedimento"), on_delete=models.CASCADE)
     data_hora = models.DateTimeField(("data e hora do agendamento"), auto_now=False, auto_now_add=False, null=False)
     observacoes = models.TextField(("observações"), null=True, blank=True)
 
