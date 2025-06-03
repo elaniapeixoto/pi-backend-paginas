@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -17,7 +18,8 @@ Classes necessárias:
 
 
 class Cliente(models.Model):
-    
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+
     ESTADOS = {
         "AC" : "Acre",
         "AL" : "Alagoas",
@@ -70,7 +72,7 @@ class Cliente(models.Model):
     # TEM MUITOS CARGOS? TEM VARIAÇÃO DE PERMISSÕES ENTRE CARGOS?
 class Funcionario(models.Model):
     cliente = models.OneToOneField("Cliente", verbose_name=("cliente"), on_delete=models.CASCADE)
-    cargo = models.ForeignKey(Cargos, verbose_name=("cargos"), on_delete=models.PROTECT)
+    cargo = models.CharField(("cargo"), max_length=50)
     salario = models.DecimalField(("salário"), max_digits=5, decimal_places=2)
     pis = models.CharField(("pis"), max_length=13)
     entrada = models.DateField(("data de entrada"), auto_now=False, auto_now_add=True)
@@ -82,3 +84,16 @@ class Locador(models.Model):
     inicio_contrato = models.DateField(("inicio do contrato"), auto_now=False, auto_now_add=False)
     fim_contrato = models.DateField(("fim do contrato"), auto_now=False, auto_now_add=False)
     
+class Procedimento(models.Model):
+
+    procedimento = models.CharField(("procedimento"), max_length=50, unique=True, null=False)
+    valor = models.DecimalField(("valor"), max_digits=5, decimal_places=2)
+    profissionais = models.ManyToManyField(Funcionario, related_name="profissional_que_realiza", null=False) 
+    tempo_medio = models.DurationField(("Tempo Médio do Procedimento"), null=True, blank=True)
+
+class Agendamento(models.Model):
+
+    cliente = models.ForeignKey(Cliente, verbose_name=("cliente"), on_delete=models.CASCADE)
+    procedimento = models.ForeignKey(Procedimento, verbose_name=("procedimento"), on_delete=models.CASCADE)
+    data_hora = models.DateTimeField(("data e hora do agendamento"), auto_now=False, auto_now_add=False, null=False)
+    observacoes = models.TextField(("observações"), null=True, blank=True)
