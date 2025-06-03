@@ -69,7 +69,6 @@ class Cliente(models.Model):
     tipo = models.CharField(("tipo"), choices= TIPO, null= True)
     observacoes = models.TextField(("observações"))
     
-    # TEM MUITOS CARGOS? TEM VARIAÇÃO DE PERMISSÕES ENTRE CARGOS?
 class Funcionario(models.Model):
     cliente = models.OneToOneField("Cliente", verbose_name=("cliente"), on_delete=models.CASCADE)
     cargo = models.CharField(("cargo"), max_length=50)
@@ -85,14 +84,12 @@ class Locador(models.Model):
     fim_contrato = models.DateField(("fim do contrato"), auto_now=False, auto_now_add=False)
     
 class Procedimento(models.Model):
-
     procedimento = models.CharField(("procedimento"), max_length=50, unique=True, null=False)
     valor = models.DecimalField(("valor"), max_digits=5, decimal_places=2)
     profissionais = models.ManyToManyField(Funcionario, related_name="profissional_que_realiza", null=False) 
     tempo_medio = models.DurationField(("Tempo Médio do Procedimento"), null=True, blank=True)
 
 class Agendamento(models.Model):
-
     cliente = models.ForeignKey(Cliente, verbose_name=("cliente"), on_delete=models.CASCADE)
     procedimento = models.ForeignKey(Procedimento, verbose_name=("procedimento"), on_delete=models.CASCADE)
     data_hora = models.DateTimeField(("data e hora do agendamento"), auto_now=False, auto_now_add=False, null=False)
