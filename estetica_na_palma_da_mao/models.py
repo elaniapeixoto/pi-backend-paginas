@@ -82,3 +82,15 @@ class Locador(models.Model):
     inicio_contrato = models.DateField(("inicio do contrato"), auto_now=False, auto_now_add=False)
     fim_contrato = models.DateField(("fim do contrato"), auto_now=False, auto_now_add=False)
     
+class Procedimento(models.Model):
+
+    PROFISSIONAIS = {
+        "PAMELA": "PAMELA",
+        "CARLINE": "CARLINE",
+        "ANA PAULA": "ANA PAULA",
+    }
+
+    procedimento = models.CharField(("procedimento"), max_length=50, null=False)
+    valor = models.DecimalField(("valor"), max_digits=5, decimal_places=2)
+    profissional = models.CharField(("profissional"), choices=PROFISSIONAIS, null=False)
+    tempo_estimado = models.IntegerField(("tempo estimado"), null=False, help_text="Tempo em minutos")
