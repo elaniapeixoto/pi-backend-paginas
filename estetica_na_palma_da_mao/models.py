@@ -90,7 +90,22 @@ class Procedimento(models.Model):
         "ANA PAULA": "ANA PAULA",
     }
 
-    procedimento = models.CharField(("procedimento"), max_length=50, null=False)
+    procedimento = models.CharField(("procedimento"), max_length=50, unique=True, null=False)
     valor = models.DecimalField(("valor"), max_digits=5, decimal_places=2)
     profissional = models.CharField(("profissional"), choices=PROFISSIONAIS, null=False)
-    tempo_estimado = models.IntegerField(("tempo estimado"), null=False, help_text="Tempo em minutos")
+    tempo_medio = models.DurationField(("Tempo Médio do Procedimento"), null=True, blank=True)
+
+class Agendamento(models.Model):
+
+    PROFISSIONAIS = {
+        "PAMELA": "PAMELA",
+        "CARLINE": "CARLINE",
+        "ANA PAULA": "ANA PAULA",
+    }
+    nome = models.CharField(("nome"), max_length=50, null= False)
+    procedimento = models.CharField(("procedimento"), max_length=50, null=False)
+    profissional = models.CharField(("profissional"), choices=PROFISSIONAIS, null=False)
+    data_hora = models.DateTimeField(("data e hora do agendamento"), auto_now=False, auto_now_add=False, null=False)
+    observacoes = models.TextField(("observações"), null=True, blank=True)
+
+    
