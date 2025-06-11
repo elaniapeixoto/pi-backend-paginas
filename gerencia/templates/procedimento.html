@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block title %}Cadastro de procedimentos{% endblock %}
+
+{% block content %}
+
+
+<table style="background-color: #F8D36F; width: 50%; border: 2px solid #6C3241;" align="center">
+        <form>
+            <tr>
+                <th colspan="1" align="left"><label for="nomeP">Nome do procedimento:</label></th>
+                <td colspan="1"><input type="text" id="nomeP" name="nomeP"></td>
+
+            </tr>
+
+            <tr>
+                <th colspan="1" align="left"><label>Qual profissional ira realizar?</label></th>
+                    <td colspan="2"> 
+                        <input type="radio" id="Pamela" name="profissional" value="Pamela">
+                        <label for="Pamela">Pamela</label>
+                        <input type="radio" id="Carline" name="profissional" value="Carline">
+                        <label for="Carline">Carline</label>
+                        <input type="radio" id="Ana Paula" name="profissional" value="Ana_Paula">
+                        <label for="Ana_Paula">Ana Paula</label>
+                        <input type="radio" id="Pamela" name="profissional" value="Pamela">
+                        <label for="Pamela">Pamela</label>
+                    </td>
+            </tr>
+
+            <tr>
+                <th colspan="1" align="left"><label for="valor">Qual valor do procedimento?</label></th>
+                <td colspan="2"><input type="text" id="valor" name="valor"</td>
+            </tr>
+
+            <tr>
+                <th colspan="1"><label for="tempo">Qual tempo médio do procedimento?</label></th>
+                <td colspan="2"><input type="text" id="tempo" name="tempo"></td>
+            </tr>
+
+            <tr>
+                <td colspan="1" rowspan="1" align="center">
+                    <input type="button" value="Excluir">
+                </td>
+
+                <td>
+
+                </td>
+
+                <td colspan="1" rowspan="1" align="center">
+                    <input type="button" value="Salvar">
+                </td>
+                
+                
+            </tr>
+        </form>
+    </table>
+
+
+{% endblock %}

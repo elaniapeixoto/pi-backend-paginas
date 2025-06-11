@@ -1,0 +1,75 @@
+{% load static %}
+
+
+{% block content %}
+<header style="text-align: center;">
+    <img src="{% static 'img/logopamela.png' %}" height="30%"  alt="Logo Pamela"><br>
+</header>
+
+<form id="loginForm" method='POST' novalidate>
+    {% csrf_token %}
+    <table style="background-color: RGB(108,50,65);" align="center" height="20%" width="20%">
+        <tr>
+            <th colspan="3" style="font-size: larger; color: RGB(248,222,111);">Entre com usuário e senha</th>
+        </tr>
+        <tr>
+            <th style="color: RGB(248,222,111);"><label for="username">Usuário:</label></th>
+            <td colspan="2"><input type="text" id="username" name="username"></td>
+        </tr>
+        <tr>
+            <th style="color: RGB(248,222,111);"><label for="password">Senha:</label></th>
+            <td colspan="2"><input type="password" id="password" name="password"></td>
+        </tr>
+        <tr align="center">
+            <td align="left"><input type="submit" value="Acessar"></td>
+            <td>&nbsp;</td>
+            <td align="right"><input type="reset" value="Cancelar"></td>
+        </tr>
+        <tr>
+            <th colspan="3" style="background-color: rgb(240, 237, 237);">
+                <a href="#">Esqueceu sua senha?</a>
+            </th>
+        </tr>
+    </table>
+</form>
+{% comment %} 
+<script>
+    const form = document.getElementById('loginForm');
+    const username = document.getElementById('username');
+    const senha = document.getElementById('password');
+
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        if (username.value.trim() === "") {
+            alert("Preencha um usuário válido");
+            return;
+        } else if (senha.value === "") {
+            alert("Preencha a senha");
+            return;
+        } else {
+            form.submit();
+        }
+    });
+
+    function logar() {
+        const username = document.getElementById('username').value.trim();
+        const senha = document.getElementById('password').value;
+
+        
+        if (!username) {
+            alert("Preencha o usuário!");
+            return;
+        }
+        if (!senha) {
+            alert("Preencha a senha!");
+            return;
+        }
+
+        if (username === "admin" && senha === "admin") {
+            window.location.href = "/menu/";  
+        } else {
+            alert("Usuário ou senha incorretos!");
+        }
+    }
+</script> {% endcomment %}
+{% endblock %}

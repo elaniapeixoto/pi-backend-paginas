@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang='pt-BR'>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <title>index</title>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+            }
+    
+            main {
+                flex: 1;
+            }
+    
+            a {
+                color: black;
+                text-decoration: none;
+            }
+    
+            a:hover {
+                color: #6C3241;
+            }
+    
+            footer {
+                width: 100%;
+                background-color: #D2B048;
+                border-top: 2px solid #6C3241;
+                text-align: center;
+                font-family: 'Josefin Sans', sans-serif;
+            }
+        </style>
+
+</head>
+
+
+<body>
+    <header style="text-align: center;">
+        <img src="{% static 'img/logopamelahead.png'%} " width="10%">
+        <img src="{% static 'img/logopamelaletter.png'%}" width="40%">
+        <table align="center"
+            style="width: 50%; border-style: solid; border-color:  #6C3241; border-width: 2px; background-color: #D2B048;">
+            {% if request.path != '/' %}
+            <tr>
+                <th colspan='4'>
+                    <h2>{% block title %} {% endblock %}</h2>
+                </th>
+            </tr>
+            {% endif %}
+            <tr>
+                <th><a href="#">Procedimentos</a></th>
+                <th><a href="#">Agenda</a></th>
+                <th><a href="{% url 'sobre' %}">Sobre</a></th>
+                <th>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </th>
+
+            </tr>
+
+        </table>
+    </header>
+
+    <main style='padding: 15px;'>
+        {% block content %}{% endblock content %}
+    </main>
+
+    <footer>
+        <p style="margin: 5px; font-weight: bold;">Estética na Palma da Mão</p>
+        <p style="margin: 5px;">Espaço Integrativo Pamela Azambuja</p>
+        <p style="margin: 5px;">Contato: (48) 99664-8079</p>
+        <p style="margin: 5px;">Atendimento na Praia de Fora - Palhoça/SC</p>
+    </footer>
+</body>
+</html>
