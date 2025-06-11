@@ -1,14 +1,15 @@
 from django.contrib import admin
-from django.urls import path
+from django.contrib.auth import views as auth_views
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    path('', include('visitante.urls')),
+    
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('menu/', views.menu, name='menu'),
-    path("cadastro_agendamento/", views.agendamento, name="agendamento"),
-    path("cadastro_pessoa/", views.cadastro_pessoa, name="cadastro_pessoa"),
-    path("cadastro_procedimento/", views.procedimento, name="procedimento"),
-    path("cadastro_fornecedor/", views.cadastro_fornecedor, name="cadastro_fornecedor"),
-    path('login/', views.login, name='login'),
+    path('gerencia/', include('gerencia.urls')),
+    
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    
 ]
