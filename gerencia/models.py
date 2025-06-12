@@ -5,7 +5,7 @@ from django.db import models
 """
 Classes necessárias:
     usuario
-    clientes 
+    pessoas 
     funcionarios
     locador
     fornecedores
@@ -17,7 +17,7 @@ Classes necessárias:
 """
 
 
-class Cliente(models.Model):
+class Pessoa(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     ESTADOS = {
@@ -71,7 +71,7 @@ class Cliente(models.Model):
     
     # TEM MUITOS CARGOS? TEM VARIAÇÃO DE PERMISSÕES ENTRE CARGOS?
 class Funcionario(models.Model):
-    cliente = models.OneToOneField("Cliente", verbose_name=("cliente"), on_delete=models.CASCADE)
+    pessoa = models.OneToOneField("Pessoa", verbose_name=("pessoa"), on_delete=models.CASCADE, null=True, blank=True)
     cargo = models.CharField(("cargo"), max_length=50)
     salario = models.DecimalField(("salário"), max_digits=5, decimal_places=2)
     pis = models.CharField(("pis"), max_length=13)
@@ -79,7 +79,7 @@ class Funcionario(models.Model):
     saida = models.DateField(("data de saida"), auto_now=False, auto_now_add=False)
     
 class Locador(models.Model):
-    cliente = models.OneToOneField( Cliente, verbose_name=("locador"), on_delete=models.CASCADE)
+    pessoa = models.OneToOneField( Pessoa, verbose_name=("locador"), on_delete=models.CASCADE)
     valor_aluguel = models.DecimalField(("valor do aluguel"), max_digits=5, decimal_places=2)
     inicio_contrato = models.DateField(("inicio do contrato"), auto_now=False, auto_now_add=False)
     fim_contrato = models.DateField(("fim do contrato"), auto_now=False, auto_now_add=False)
@@ -93,7 +93,7 @@ class Procedimento(models.Model):
 
 class Agendamento(models.Model):
 
-    cliente = models.ForeignKey(Cliente, verbose_name=("cliente"), on_delete=models.CASCADE)
+    pessoa = models.ForeignKey(Pessoa, verbose_name=("pessoa"), on_delete=models.CASCADE, null= True, blank= True)
     procedimento = models.ForeignKey(Procedimento, verbose_name=("procedimento"), on_delete=models.CASCADE)
     data_hora = models.DateTimeField(("data e hora do agendamento"), auto_now=False, auto_now_add=False, null=False)
     observacoes = models.TextField(("observações"), null=True, blank=True)

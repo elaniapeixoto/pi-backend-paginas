@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import *
 
@@ -31,37 +32,33 @@ estados = {
         "TO": "Tocantins"
     }
 
+@login_required
 def index (request):
-    return render(request, 'index.html')
+    return render(request, 'gerencia/index.html')
 
-def lista_cliente(request):
-    clientes = Cliente.objects.all()
+@login_required
+def lista_pessoa(request):
+    pessoas = Pessoa.objects.all()
     context = {
-        "clientes": clientes,
+        "pessoas": pessoas,
     }
-    return render(request, 'cliente/lista_cliente.html', context)
+    return render(request, 'lista_pessoa.html', context)
 
-def cadastro_cliente(request):
-    from .forms import ClienteForm
-    
-    if request.method == 'POST':
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, "cliente/cadastro_cliente.html", {"form": ClienteForm(), "estados": estados, "success": True})
-    else:
-        form = ClienteForm()
-    return render(request, "cliente/cadastro_cliente.html", {"form": form, "estados": estados})
+@login_required
+def cadastro_pessoa(request):
+    return render(request, "cadastro_pessoa.html", {"estados": estados})
 
-def cadastro_usuario(request):
-    
-    context = {
-        "estados": estados,
-    }
-    return render(request, "usuario/cadastro_usuario.html", context)
+# @login_required
+# def cadastro_usuario(request):
+#     context = {
+#         "estados": estados,
+#     }
+#     return render(request, "usuario/cadastro_usuario.html", context)
 
+@login_required
 def cadastro_agendamento(request):
-    return render(request, "agendamento/agendamento.html")
+    return render(request, "agendamento.html")
 
+@login_required
 def cadastro_procedimento(request):
     return render(request, "index.html")

@@ -36,6 +36,36 @@
                 text-align: center;
                 font-family: 'Josefin Sans', sans-serif;
             }
+
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+            .dropdown-content a {
+                color: black;
+                padding: 8px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+            }
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            .dropdown > a:after {
+                content: " ▼";
+                font-size: 0.7em;
+            }
         </style>
 
 </head>
@@ -47,30 +77,28 @@
         <img src="{% static 'img/logopamelaletter.png'%}" width="40%">
         <table align="center"
             style="width: 50%; border-style: solid; border-color:  #6C3241; border-width: 2px; background-color: #D2B048;">
-            {% if request.path != '/' %}
             <tr>
-                <th colspan='4'>
-                    <h2>{% block title %} {% endblock %}</h2>
-                </th>
-            </tr>
-            {% endif %}
-            <tr>
-                <th><a href="#">Procedimentos</a></th>
-                <th><a href="#">Agenda</a></th>
-                <th><a href="{% url 'sobre' %}">Sobre</a></th>
                 <th>
-                    {% if request.user.is_authenticated %}
-                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" style="background: none; border: none; cursor: pointer; color: black; font-weight: normal; padding: 0; font-family: 'Josefin Sans', sans-serif;">
-                                Logout
-                            </button>
-                        </form>
-                    {% else %}
-                        <a href="{% url 'login' %}">Login</a>
-                    {% endif %}
+                    <div class="dropdown">
+                        <a href="#">Pessoas</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'cadastro_pessoa' %}">Cadastro</a>
+                            <a href="{% url 'lista_pessoa' %}">Lista</a>
+                        </div>
+                    </div>
                 </th>
-
+                <th><a href="#">Funcionarios</a></th>
+                <th><a href="#">Alugueis</a></th>
+                <th><a href="#">Procedimentos</a></th>
+                <th><a href="#">Agendamento</a></th>
+                <th>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background: none; border: none; cursor: pointer; color: black; font-weight: normal; padding: 0; font-family: 'Josefin Sans', sans-serif;">
+                            Logout
+                        </button>
+                    </form>
+                </th>
             </tr>
 
         </table>
