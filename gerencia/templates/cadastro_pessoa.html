@@ -6,169 +6,80 @@
 
 {% block content %}
 
-<form id="form" novalidate>
+<form id="form" method='POST' 
+    action="{% if pessoa%} {% url 'editar_pessoa' pessoa.id %} {% else %} {% url 'cadastro_pessoa' %} {% endif %}" novalidate>
+
+    {% csrf_token %}
     <table
         style="background-color: #F8D36F; width: 50%; margin: 0 auto; text-align: left; border-style: solid; border-color: #6C3241; border-width: 2px;">
 
         <tr>
-            <th><label for="fullname">NOME COMPLETO *</label></th>
-            <td><input type="text" id="fullname" size="25%" name="fullname" required><span id="fullnameError"
+            <th><label for="nome_completo">NOME COMPLETO *</label></th>
+            <td><input type="text" id="nome_completo" size="25%" name="nome_completo" required value="{{ pessoa.nome_completo|default_if_none:'' }}"><span id="nome_completoError"
                     class="error"></span></td>
         </tr>
 
         <tr>
-            <th><label for="CPF">CPF *</label></th>
-            <td><input type="tel" placeholder="000.000.000-00" id="CPF" size="18" name="CPF" maxlength="14" min="0"
-                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required><span id="cpfError" class="error"></span></td>
-        </tr>
-
-        <tr>
-            <th><label for="datan">DATA DE NASCIMENTO *</label></th>
-            <td><input type="text" placeholder="00/00/0000" id="datan" size="8" name="datanascimento" required><span
-                    id="datanError" class="error"></span></td>
-        </tr>
-
-        <tr>
-            <th><label for="endereco">RUA *</label></th>
-            <td><input type="text" placeholder="Rua, Avenida, etc" id="endereco" size="60" name="endereco"><span
-                    id="enderecoError" class="error"></span></td>
-        </tr>
-
-        <tr>
-            <th><label for="cep">CEP *</label></th>
-            <td><input type="text" placeholder="00000-000" id="cep" size="15%" name="CEP" max="99999999"
-                    pattern="\d{5}-\d{3}" required><span id="cepError" class="error"></span></td>
+            <th><label for="cpf">CPF *</label></th>
+            <td><input type="tel" placeholder="00000000000" id="cpf" size="18" name="cpf" maxlength="11" 
+                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required value="{{ pessoa.cpf|default_if_none:'' }}"><span id="cpfError" class="error"></span></td>
         </tr>
 
         <tr>
             <th><label for="numero">NÚMERO *</label></th>
-            <td><input type="text" id="numero" name="numero"><span id="numeroError" class="error"></span></td>
+            <td><input type="text" placeholder='(00) 55555-4444' id="numero" name="numero" value="{{ pessoa.numero|default_if_none:'' }}"><span id="numeroError" class="error"></span></td>
         </tr>
 
         <tr>
-            <th><label for="complemento">COMPLEMENTO</label></th>
-            <td><input type="text" id="complemento" size="5" name="complemento"><span id="complementoError"
-                    class="error"></span></td>
+            <th><label for="email">EMAIL *</label></th>
+            <td><input type="email" placeholder="nome@exemplo.com" id="email" size="28" name="email" required value="{{ pessoa.email|default_if_none:'' }}"><span
+                    id="emailError" class="error"></span></td>
         </tr>
 
         <tr>
-            <th><label for="bairro">BAIRRO *</label></th>
-            <td><input type="text" id="bairro" size="20" name="bairro"><span id="bairroError" class="error"></span>
-            </td>
+            <th><label for="data_nascimento">DATA DE NASCIMENTO *</label></th>
+            <td><input type="date" id="data_nascimento" name="data_nascimento" required value="{{ pessoa.data_nascimento|date:'Y-m-d' }}"><span
+                    id="datanError" class="error"></span></td>
         </tr>
+
+        <tr>
+            <th><label for="cep">CEP *</label></th>
+            <td><input type="text" placeholder="00000-000" id="cep" size="15%" name="cep" max="99999999"
+                    pattern="\d{5}-\d{3}" required value="{{ pessoa.cep|default_if_none:'' }}"><span id="cepError" class="error"></span></td>
+        </tr>         
 
         <tr>
             <th><label for="cidade">CIDADE *</label></th>
-            <td><input type="text" id="cidade" size="40" name="cidade"><span id="cidadeError" class="error"></span>
+            <td><input type="text" id="cidade" size="40" name="cidade" value="{{ pessoa.cidade|default_if_none:'' }}"><span id="cidadeError" class="error"></span>
             </td>
         </tr>
 
         <tr>
             <th><label for="estado">ESTADO *</label></th>
-            <td>
-                <select name="ESTADO" id="estado">
-                    <option value="escolha">---Escolha---</option>
-                    {% for estado in estados %}
-                        <option value="{{ estado.title }}">{{ estado.title }} </option>
-                    {% endfor %}
-                </select>
-                <span id="estadoError" class="error"></span>
-            </td>
-        </tr>
+                <td>
+                    <select name="estado" id="estado">
+                        <option value="escolha">---Escolha---</option>
+                        {% for sigla, nome in estados %}
+                            <option value="{{ sigla }}" {% if pessoa.estado|upper == sigla %}selected{% endif %}>{{ nome }}</option>
+                        {% endfor %}
+                    </select>
+                    <span id="estadoError" class="error"></span>
+                </td>
+            </tr>
 
         <tr>
-            <th><label for="email">EMAIL *</label></th>
-            <td><input type="email" placeholder="nome@exemplo.com" id="email" size="28" name="email" required><span
-                    id="emailError" class="error"></span></td>
-        </tr>
-
-        <tr>
-            <th><label for="telefone">TELEFONE *</label></th>
-            <td><input type="text" placeholder="(00) 00000-0000" id="telefone" size="15" name="telefone"
-                    maxlength="15" required><span id="telefoneError" class="error"></span></td>
-        </tr>
-
-        <tr>
-            <th><label for="Observacao">OBSERVAÇÕES</label></th>
-            <td><textarea name="Observacao" rows="5" style="width: 50%;"></textarea></td>
+            <th><label for="observacoes">OBSERVAÇÕES</label></th>
+            <td><textarea name="observacoes" rows="5" style="width: 50%;">{{ pessoa.observacoes|default_if_none:'' }}</textarea></td>
         </tr>
 
         <tr>
             <td colspan="2" style="text-align: right;">
-                <input type="submit" value="Gravar"> <span>&nbsp;&nbsp;</span>
-                <input type="reset" value="Limpar dados">
+                <input type="submit" value="Salvar"> <span>&nbsp;&nbsp;</span>
+                <a href="{% url 'lista_pessoa' %}" class="button">Cancelar</a>
             </td>
         </tr>
     </table>
 </form>
 
-<script>
-    const form = document.getElementById('form');
-    const cpf = document.getElementById('CPF');
-    const datan = document.getElementById('datan');
-    const cep = document.getElementById('cep');
-    const email = document.getElementById('email');
-    const telefone = document.getElementById('telefone');
 
-    function validateForm() {
-        const requiredFields = ['fullname', 'CPF', 'datan', 'cep', 'email', 'telefone'];
-        let isValid = true;
-
-        requiredFields.forEach(fieldId => {
-            const input = document.getElementById(fieldId);
-            const errorSpan = document.getElementById(`${fieldId}Error`);
-
-            if (!input || !input.value.trim()) {
-                errorSpan.textContent = 'Campo obrigatório.';
-                isValid = false;
-            } else {
-                errorSpan.textContent = '';
-            }
-        });
-
-        return isValid;
-    }
-
-    form.addEventListener("submit", event => {
-        event.preventDefault();
-
-        if (!validateForm()) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
-            return;
-        }
-
-        const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
-        if (!cpfRegex.test(cpf.value)) {
-            alert('Por favor, preencha um CPF válido.');
-            return;
-        }
-
-        const datanRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-        if (!datanRegex.test(datan.value)) {
-            alert('Por favor, preencha uma data de nascimento válida (DD/MM/AAAA).');
-            return;
-        }
-
-        const cepRegex = /^\d{5}-\d{3}$/;
-        if (!cepRegex.test(cep.value)) {
-            alert('Por favor, preencha um CEP válido (XXXXX-XXX).');
-            return;
-        }
-
-        const emailRegex = /^\S+@\S+\.\S+$/;
-        if (!emailRegex.test(email.value)) {
-            alert('Por favor, preencha um email válido.');
-            return;
-        }
-
-        const telefoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
-        if (!telefoneRegex.test(telefone.value)) {
-            alert('Por favor, preencha um telefone válido (DD) XXXXX-XXXX.');
-            return;
-        }
-
-        alert('Formulário enviado com sucesso!');
-        form.submit();
-    });
-</script>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 
 estados = {
@@ -31,6 +31,7 @@ estados = {
         "SE": "Sergipe",
         "TO": "Tocantins"
     }
+estados = estados.items()
 
 @login_required
 def index (request):
@@ -39,21 +40,48 @@ def index (request):
 @login_required
 def lista_pessoa(request):
     pessoas = Pessoa.objects.all()
-    context = {
-        "pessoas": pessoas,
-    }
-    return render(request, 'lista_pessoa.html', context)
+  
+    return render(request, 'lista_pessoa.html', {"pessoas": pessoas})
 
 @login_required
-def cadastro_pessoa(request):
+def cadastro_pessoa(request):    
+    # RECEBE O REQUEST PARA SALVAR OS DADOS DA PESSOA E RETORNA A LISTA 
+    if request.method == 'POST':
+        dados = request.POST.dict()
+        pessoa = Pessoa()
+        # VERIFICA CAMPOS VAZIOS
+        for campo in ['nome_completo', 'cpf', 'numero', 'email', 'data_nascimento', 'cep', 'cidade', 'estado', 'observacoes']:
+            valor = dados.get(campo)
+            setattr(pessoa, campo, valor if valor != '' else None)
+
+        pessoa.save()
+        return redirect('lista_pessoa')
+    
     return render(request, "cadastro_pessoa.html", {"estados": estados})
+
+def editar_pessoa(request, id):
+    # BUSCA PESSOA PELO ID, SE NAO ENCONTRAR RETORNA PARA A LISTA
+    try:
+        pessoa = Pessoa.objects.get(id=id)
+    except Pessoa.DoesNotExist:
+        return render(request, 'lista_pessoa.html', {"warning": True})
+    
+    # SE FOR UM REQUEST VAI EDITAR OS DADOS DA PESSOA
+    if request.method == 'POST':
+        dados = request.POST.dict()
+        # VERIFICA CAMPOS VAZIOS
+        for campo in ['nome_completo', 'cpf', 'numero', 'email', 'data_nascimento', 'cep', 'cidade', 'estado', 'observacoes']:
+            valor = dados.get(campo)
+            setattr(pessoa, campo, valor if valor != '' else None)
+        pessoa.save()
+        return redirect('lista_pessoa')
+    
+    # MOSTRA A TELA DE EDIÇÃO COM AS INFORMAÇÕES DA PESSOA
+    return render(request, 'cadastro_pessoa.html', {'pessoa': pessoa, 'estados': estados})
 
 # @login_required
 # def cadastro_usuario(request):
-#     context = {
-#         "estados": estados,
-#     }
-#     return render(request, "usuario/cadastro_usuario.html", context)
+#     return render(request, "usuario/cadastro_usuario.html")
 
 @login_required
 def cadastro_agendamento(request):

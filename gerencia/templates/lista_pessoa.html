@@ -5,28 +5,30 @@
 {% block content %}
 
 <table class="table" style="background-color: #F8D36F; width: 50%; border-style: solid; border-color:  #6C3241; border-width: 2px;" align='center'>
-    {% for pessoa in pessoas %}
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Data de Nascimento</th>
-            </tr>
-        </thead>
-        <tbody>
-            <a href="{% url 'pessoa_edit' pessoa.id %}">
-            <tr>
-                <td>{{ pessoa.id }}</td>
-                <td>{{ pessoa.nome }}</td>
-                <td>{{ pessoa.cpf }}</td>
-                <td>{{ pessoa.data_nascimento }}</td>
-            </tr></a>
-    {% empty %}
+    <thead align='center'>
         <tr>
-            <td colspan="5" align='center'>Nenhuma pessoa cadastrada.</td>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Data de Nascimento</th>
+            
         </tr>
-    {% endfor %}
+    </thead>
+    <tbody align='center'>
+        {% for pessoa in pessoas %}
+            <tr>
+                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.id }}</a></td>
+                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.nome_completo }}</a></td>
+                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.cpf }}</a></td>
+                <td><a href="{% url 'editar_pessoa' pessoa.id %}">
+                    {% if pessoa.numero %} {{ pessoa.numero }} {% else %} - {% endif %}
+                </a></td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5" align='center'>Nenhuma pessoa cadastrada.</td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
 

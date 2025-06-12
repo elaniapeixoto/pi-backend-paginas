@@ -55,19 +55,18 @@ class Pessoa(models.Model):
         ("LOCADOR", "Locador")
     ]
     
-    nome_completo = models.CharField(("nome"), max_length=50, null= False)
-    cpf = models.CharField("cpf", max_length=11, null= False )
+    nome_completo = models.CharField(("nome"), max_length=50)
+    cpf = models.CharField("cpf", max_length=11 )
     numero = models.IntegerField("número para contato")
-    data_nascimento = models.DateField(("data de nascimento"), auto_now=False, auto_now_add=False, null= False)
-    email = models.EmailField(("email"), max_length=100)
-    cep = models.CharField(("cep"), max_length=8)
-    rua = models.CharField(("rua"), max_length=100)
-    cidade = models.CharField(("cidade"), max_length=35)
+    data_nascimento = models.DateField(("data de nascimento"), auto_now=False, auto_now_add=False, null= True)
+    email = models.EmailField(("email"), max_length=100, null= True, blank= True)
+    cep = models.CharField(("cep"), max_length=8, null= True, blank= True)
+    cidade = models.CharField(("cidade"), max_length=35, null= True, blank= True)
     # UTILIZANDO ARRAY AFIM DE TESTAR A FUNCIONABILIDADE DO DJANGO 
     # E COMO SERA O USO DO ARMAZENAMENTO COMPARADO AO INT(4)
-    estado = models.CharField(("estado"), choices= ESTADOS)
-    tipo = models.CharField(("tipo"), choices= TIPO, null= True)
-    observacoes = models.TextField(("observações"))
+    estado = models.CharField(("estado"), choices= ESTADOS, null= True, blank= True)
+    tipo = models.CharField(("tipo"), choices= TIPO, null= True, blank= True)
+    observacoes = models.TextField(("observações"), null= True, blank= True)
     
     # TEM MUITOS CARGOS? TEM VARIAÇÃO DE PERMISSÕES ENTRE CARGOS?
 class Funcionario(models.Model):
