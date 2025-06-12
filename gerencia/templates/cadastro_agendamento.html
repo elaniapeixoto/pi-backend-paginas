@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Agendamentos {% endblock %}
+
+{% block content %}
+
+<body>
+    <form id="agendamentoForm">
+        <table class='content w-50'align="center">
+            
+            <tr>
+                <th><label for="nome">Nome:</label></th>
+                <td colspan="2"><input type="text" id="nome" name="nome" size="30"></td>
+            </tr>
+            <tr>
+                <th><label for="proced">Procedimento:</label></th>
+                <td colspan="2">
+                    <select name="proced" id="proced">
+                        <option value="" selected disabled>Selecione o procedimento desejado</option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="prof">Profissional:</label></th>
+                <td><input type="checkbox" name="prof" value="Pamela">Pamela</td>
+                <td><input type="checkbox" name="prof" value="Ana Paula">Ana Paula
+            </tr>
+
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><input type="checkbox" name="prof" value="Carline">Carline</td>
+            </tr>
+            <tr>
+                <th><label for="data_hora">Data e Hora desejada:</label></th>
+                <td colspan="2"><input type="datetime-local" id="data_hora" name="data_hora">
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" value="Agendar"></td>
+                <td><input type="reset" value="Cancelar"></td>
+            </tr>
+
+        </table>
+
+    </form>
+
+</body>
+
+{% endblock %}

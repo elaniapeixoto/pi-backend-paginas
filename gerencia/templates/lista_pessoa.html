@@ -4,9 +4,9 @@
 
 {% block content %}
 
-<table class="table" style="background-color: #F8D36F; width: 50%; border-style: solid; border-color:  #6C3241; border-width: 2px;" align='center'>
+<table class="content w-50 " align='center'>
     <thead align='center'>
-        <tr>
+        <tr class=''>
             <th>ID</th>
             <th>Nome</th>
             <th>CPF</th>
@@ -16,7 +16,7 @@
     </thead>
     <tbody align='center'>
         {% for pessoa in pessoas %}
-            <tr>
+            <tr class='border-top border-success'>
                 <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.id }}</a></td>
                 <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.nome_completo }}</a></td>
                 <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.cpf }}</a></td>

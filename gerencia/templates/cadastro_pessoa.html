@@ -3,54 +3,49 @@
 {% load static %}
 
 {% block title %} Cadastro de pessoas {% endblock %}
-
 {% block content %}
 
+
 <form id="form" method='POST' 
-    action="{% if pessoa%} {% url 'editar_pessoa' pessoa.id %} {% else %} {% url 'cadastro_pessoa' %} {% endif %}" novalidate>
+    action="{% if pessoa%} {% url 'editar_pessoa' pessoa.id %} {% else %} {% url 'cadastro_pessoa' %} {% endif %}" >
 
     {% csrf_token %}
-    <table
-        style="background-color: #F8D36F; width: 50%; margin: 0 auto; text-align: left; border-style: solid; border-color: #6C3241; border-width: 2px;">
-
+    <table class='content w-50' align='center'>
         <tr>
             <th><label for="nome_completo">NOME COMPLETO *</label></th>
-            <td><input type="text" id="nome_completo" size="25%" name="nome_completo" required value="{{ pessoa.nome_completo|default_if_none:'' }}"><span id="nome_completoError"
-                    class="error"></span></td>
+            <td><input type="text" id="nome_completo" size="25%" name="nome_completo" required value="{{ pessoa.nome_completo|default_if_none:'' }}"></td>
         </tr>
 
         <tr>
             <th><label for="cpf">CPF *</label></th>
-            <td><input type="tel" placeholder="00000000000" id="cpf" size="18" name="cpf" maxlength="11" 
-                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required value="{{ pessoa.cpf|default_if_none:'' }}"><span id="cpfError" class="error"></span></td>
+            <td><input type="tel" placeholder="00000000000" id="cpf" size="18" name="cpf" maxlength="14" 
+                    pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required value="{{ pessoa.cpf|default_if_none:'' }}"></td>
         </tr>
 
         <tr>
             <th><label for="numero">NÚMERO *</label></th>
-            <td><input type="text" placeholder='(00) 55555-4444' id="numero" name="numero" value="{{ pessoa.numero|default_if_none:'' }}"><span id="numeroError" class="error"></span></td>
+            <td><input type="text" placeholder='(00) 55555-4444' id="numero" name="numero" required value="{{ pessoa.numero|default_if_none:'' }}"></td>
         </tr>
 
         <tr>
             <th><label for="email">EMAIL *</label></th>
-            <td><input type="email" placeholder="nome@exemplo.com" id="email" size="28" name="email" required value="{{ pessoa.email|default_if_none:'' }}"><span
-                    id="emailError" class="error"></span></td>
+            <td><input type="email" placeholder="nome@exemplo.com" id="email" size="28" name="email" value="{{ pessoa.email|default_if_none:'' }}"></td>
         </tr>
 
         <tr>
             <th><label for="data_nascimento">DATA DE NASCIMENTO *</label></th>
-            <td><input type="date" id="data_nascimento" name="data_nascimento" required value="{{ pessoa.data_nascimento|date:'Y-m-d' }}"><span
-                    id="datanError" class="error"></span></td>
+            <td><input type="date" id="data_nascimento" name="data_nascimento" value="{{ pessoa.data_nascimento|date:'Y-m-d' }}"></td>
         </tr>
 
         <tr>
             <th><label for="cep">CEP *</label></th>
             <td><input type="text" placeholder="00000-000" id="cep" size="15%" name="cep" max="99999999"
-                    pattern="\d{5}-\d{3}" required value="{{ pessoa.cep|default_if_none:'' }}"><span id="cepError" class="error"></span></td>
+                    pattern="\d{5}-\d{3}" value="{{ pessoa.cep|default_if_none:'' }}"></td>
         </tr>         
 
         <tr>
             <th><label for="cidade">CIDADE *</label></th>
-            <td><input type="text" id="cidade" size="40" name="cidade" value="{{ pessoa.cidade|default_if_none:'' }}"><span id="cidadeError" class="error"></span>
+            <td><input type="text" id="cidade" size="40" name="cidade" value="{{ pessoa.cidade|default_if_none:'' }}">
             </td>
         </tr>
 
@@ -63,7 +58,6 @@
                             <option value="{{ sigla }}" {% if pessoa.estado|upper == sigla %}selected{% endif %}>{{ nome }}</option>
                         {% endfor %}
                     </select>
-                    <span id="estadoError" class="error"></span>
                 </td>
             </tr>
 
@@ -72,14 +66,11 @@
             <td><textarea name="observacoes" rows="5" style="width: 50%;">{{ pessoa.observacoes|default_if_none:'' }}</textarea></td>
         </tr>
 
-        <tr>
-            <td colspan="2" style="text-align: right;">
-                <input type="submit" value="Salvar"> <span>&nbsp;&nbsp;</span>
-                <a href="{% url 'lista_pessoa' %}" class="button">Cancelar</a>
-            </td>
-        </tr>
     </table>
+    <div align='center' >
+        <a href="{% url 'lista_pessoa' %}" class="btn btn-secondary ">Cancelar</a> <span>&nbsp;&nbsp;</span>
+        <input class='btn btn-success ' type="submit" value="Salvar">
+    </div>
 </form>
-
 
 {% endblock %}

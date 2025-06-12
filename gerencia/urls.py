@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 
 urlpatterns = [
-    path('', views.index, name='gerencia'),
+    path('', views.index, name='index'),
+    path('visitante/', include('visitante.urls'), name='visitante'),
+    
     
     # PESSOAS
     path("pessoa/lista/", views.lista_pessoa, name="lista_pessoa"),
