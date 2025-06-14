@@ -15,43 +15,41 @@ Classes necessárias:
     procedimentos  #feito
    
 """
-ESTADOS = {  # isso nao seria uma tupla? elania
-        "AC": "Acre",
-        "AL": "Alagoas",
-        "AP": "Amapá",
-        "AM": "Amazonas",
-        "BA": "Bahia",
-        "CE": "Ceará",
-        "DF": "Distrito Federal",
-        "ES": "Espírito Santo",
-        "GO": "Goiás",
-        "MA": "Maranhão",
-        "MT": "Mato Grosso",
-        "MS": "Mato Grosso do Sul",
-        "MG": "Minas Gerais",
-        "PA": "Pará",
-        "PB": "Paraíba",
-        "PR": "Paraná",
-        "PE": "Pernambuco",
-        "PI": "Piauí",
-        "RJ": "Rio de Janeiro",
-        "RN": "Rio Grande do Norte",
-        "RS": "Rio Grande do Sul",
-        "RO": "Rondônia",
-        "RR": "Roraima",
-        "SC": "Santa Catarina",
-        "SP": "São Paulo",
-        "SE": "Sergipe",
-        "TO": "Tocantins",
-    }
+ESTADOS = {
+    "AC": "Acre",
+    "AL": "Alagoas",
+    "AP": "Amapá",
+    "AM": "Amazonas",
+    "BA": "Bahia",
+    "CE": "Ceará",
+    "DF": "Distrito Federal",
+    "ES": "Espírito Santo",
+    "GO": "Goiás",
+    "MA": "Maranhão",
+    "MT": "Mato Grosso",
+    "MS": "Mato Grosso do Sul",
+    "MG": "Minas Gerais",
+    "PA": "Pará",
+    "PB": "Paraíba",
+    "PR": "Paraná",
+    "PE": "Pernambuco",
+    "PI": "Piauí",
+    "RJ": "Rio de Janeiro",
+    "RN": "Rio Grande do Norte",
+    "RS": "Rio Grande do Sul",
+    "RO": "Rondônia",
+    "RR": "Roraima",
+    "SC": "Santa Catarina",
+    "SP": "São Paulo",
+    "SE": "Sergipe",
+    "TO": "Tocantins",
+}
+
 
 class Pessoa(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    
-    TIPO = [
-        ("FUNCIONARIO", "Funcionario"),
-        ("LOCADOR", "Locador")
-    ]
+
+    TIPO = [("FUNCIONARIO", "Funcionario"), ("LOCADOR", "Locador")]
 
     nome_completo = models.CharField(("nome"), max_length=50)
     cpf = models.CharField("cpf", max_length=11)
@@ -130,27 +128,9 @@ class Agendamento(models.Model):
     observacoes = models.TextField(("observações"), null=True, blank=True)
 
 
-class Fornecedor(models.Model):
-    nome = models.CharField("nome da empresa ou razão social", max_length=100)
-    cnpj = models.CharField("cnpj", max_length=14, unique=True)
-
-    rua = models.CharField("rua", max_length=100)
-    numero = models.CharField("número", max_length=10)
-    cep = models.CharField("CEP", max_length=8)
-    cidade = models.CharField("cidade", max_length=50)
-    estado = models.CharField("estado", max_length=2, choices=ESTADOS)
-
-    telefone = models.CharField("telefone fixo", max_length=15, null=True, blank=True)
-    celular = models.CharField("celular", max_length=15, null=True, blank=True)
-    email = models.EmailField("e-mail", max_length=100, null=True, blank=True)
-    site = models.URLField("site", max_length=100, null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.rua}, {self.numero} - {self.cidade} - {self.estado} - CEP: {self.cep}"
-
-
 class Categoria(models.Model):
     nome = models.CharField("nome da categoria", max_length=50, unique=True)
+
     def __str__(self):
         return self.nome
 
