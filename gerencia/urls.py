@@ -19,4 +19,9 @@ urlpatterns = [
     
     # SERVICOS
     path("procedimento/", views.cadastro_procedimento, name="cadastro_procedimento"),
+
+    #FUNCIONÁRIOS
+    path("funcionario/lista/", views.lista_funcionario, name="lista_funcionario"),
+    path("funcionario/cadastro/", views.cadastro_funcionario, name="cadastro_funcionario"),
+    path("funcionario/editar/<int:id>/", views.editar_funcionario, name="editar_funcionario"),
 ]
