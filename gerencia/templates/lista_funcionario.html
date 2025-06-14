@@ -1,9 +1,53 @@
 {% extends 'gerencia/base.html' %}
-
 {% load static %}
 
 {% block content %}
-{% comment %} 
-    usar exemplo da lista_pessoa
-{% endcomment %}
+
+<table class="content w-50" align='center'>
+    <thead align='center'>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Cargo</th>
+            <th>Salário</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+        </tr>
+    </thead>
+    <tbody align='center'>
+        {% for funcionario in funcionarios %}
+        <tr class='border-top border-success'>
+            <td>
+                <a href="{% url 'editar_funcionario' funcionario.id %}">{{ funcionario.id }}</a>
+            </td>
+            <td>
+                <a href="{% url 'editar_funcionario' funcionario.id %}">
+                    {{ funcionario.pessoa.nome_completo }}
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'editar_funcionario' funcionario.id %}">{{ funcionario.cargo }}</a>
+            </td>
+            <td>
+                <a href="{% url 'editar_funcionario' funcionario.id %}">R$ {{ funcionario.salario|floatformat:2 }}</a>
+            </td>
+            <td>
+                <a href="{% url 'editar_funcionario' funcionario.id %}">
+                    {{ funcionario.entrada|date:"d/m/Y" }}
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'editar_funcionario' funcionario.id %}">
+                    {% if funcionario.saida %}{{ funcionario.saida|date:"d/m/Y" }}{% else %} - {% endif %}
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" align='center'>Nenhum funcionário cadastrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
