@@ -9,8 +9,8 @@ Classes necessárias:
     funcionarios   #feito
     locador  #feito
     fornecedores #Feito
-    produtos
-    vendas
+    produtos #feito
+    vendas 
     agenda  #feito
     procedimentos  #feito
    
@@ -20,7 +20,7 @@ Classes necessárias:
 class Pessoa(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
-    ESTADOS = {  # isso nao seria uma tupla, pois nado pode alterar? elania
+    ESTADOS = {  # isso nao seria uma tupla? elania
         "AC": "Acre",
         "AL": "Alagoas",
         "AP": "Amapá",
@@ -152,16 +152,32 @@ class Fornecedor(models.Model):
     def endereco_completo(self):
         return f"{self.rua}, {self.numero} - {self.cidade} - {self.estado} - CEP: {self.cep}"
 
+
 class Categoria(models.Model):
     nome = models.CharField("nome da categoria", max_length=50, unique=True)
-    
+
     def __str__(self):
         return self.nome
 
+
 class Produto(models.Model):
+    UNIDADES = [
+        ("ml", "Mililitro"),
+        ("kg", "Quilograma"),
+        ("un", "Unidade"),
+        ("pac", "Pacote"),
+    ]
     codigo = models.CharField("código do produto", max_length=20, unique=True)
     nome = models.CharField("nome do produto", max_length=100)
     unidade = models.CharField("unidade", max_length=10)  # tipo de medida
     fabricante = models.CharField("fabricante", max_length=100)
-    fornecedor = models.ForeignKey('Fornecedor', verbose_name="fornecedor", on_delete=models.CASCADE)
-    categoria = models.ForeignKey(Categoria, verbose_name="categoria", on_delete=models.SET_NULL, null=True, blank=True)
+    fornecedor = models.ForeignKey(
+        "Fornecedor", verbose_name="fornecedor", on_delete=models.CASCADE
+    )
+    categoria = models.ForeignKey(
+        Categoria,
+        verbose_name="categoria",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
