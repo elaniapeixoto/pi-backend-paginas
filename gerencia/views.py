@@ -121,6 +121,7 @@ def cadastro_procedimento(request):
     return render(request, "index.html")
 
 
+# funcionário
 @login_required
 def lista_funcionario(request):
     funcionarios = Funcionario.objects.select_related("pessoa").all()

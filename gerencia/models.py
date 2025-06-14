@@ -148,9 +148,7 @@ class Produto(models.Model):
         "unidade", max_length=10, choices=UNIDADES
     )  # tipo de medida
     fabricante = models.CharField("fabricante", max_length=100)
-    fornecedor = models.ForeignKey(
-        "fornecedor", verbose_name="fornecedor", on_delete=models.CASCADE
-    )
+    # fornecedor removido porque não existe no models.py
     categoria = models.ForeignKey(
         Categoria,
         verbose_name="categoria",

@@ -5,21 +5,21 @@
 
 {% block content %}
 <form id="form" method='POST'
-          action="{% if funcionario %} {% url 'editar_funcionario' funcionario.id %} {% else %} {% url 'cadastro_funcionario' %} {% endif %}">
+          action="{% if funcionario %}{% url 'editar_funcionario' funcionario.id %}{% else %}{% url 'cadastro_funcionario' %}{% endif %}">
 
           {% csrf_token %}
           <table class='content w-50' align='center'>
-
                     <tr>
                               <th><label for="pessoa">PESSOA *</label></th>
                               <td>
                                         <select name="pessoa" id="pessoa" required>
                                                   <option value="">--- Escolha uma pessoa ---</option>
                                                   {% for p in pessoas %}
-                                                  <option value="{{ p.id }}" {% if funcionario.pessoa.id==p.id
-                                                            %}selected{% endif %}>
-                                                            {{ p.nome_completo }}
-                                                  </option>
+                                                  {% if funcionario and funcionario.pessoa.id == p.id %}
+                                                  <option value="{{ p.id }}" selected>{{ p.nome_completo }}</option>
+                                                  {% else %}
+                                                  <option value="{{ p.id }}">{{ p.nome_completo }}</option>
+                                                  {% endif %}
                                                   {% endfor %}
                                         </select>
                               </td>
@@ -54,7 +54,6 @@
                               <td><input type="date" id="saida" name="saida"
                                                   value="{{ funcionario.saida|date:'Y-m-d' }}"></td>
                     </tr>
-
           </table>
 
           <div align='center'>
