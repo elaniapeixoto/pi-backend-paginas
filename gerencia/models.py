@@ -169,7 +169,9 @@ class Produto(models.Model):
     ]
     codigo = models.CharField("código do produto", max_length=20, unique=True)
     nome = models.CharField("nome do produto", max_length=100)
-    unidade = models.CharField("unidade", max_length=10)  # tipo de medida
+    unidade = models.CharField(
+        "unidade", max_length=10, choices=UNIDADES
+    )  # tipo de medida com choices
     fabricante = models.CharField("fabricante", max_length=100)
     fornecedor = models.ForeignKey(
         "Fornecedor", verbose_name="fornecedor", on_delete=models.CASCADE
