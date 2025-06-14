@@ -4,7 +4,7 @@ from django.db import models
 
 """
 Classes necessárias:
-    usuario   #feito
+    usuario   
     pessoas   #feito
     funcionarios   #feito
     locador  #feito
@@ -15,12 +15,7 @@ Classes necessárias:
     procedimentos  #feito
    
 """
-
-
-class Pessoa(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-
-    ESTADOS = {  # isso nao seria uma tupla? elania
+ESTADOS = {  # isso nao seria uma tupla? elania
         "AC": "Acre",
         "AL": "Alagoas",
         "AP": "Amapá",
@@ -50,9 +45,12 @@ class Pessoa(models.Model):
         "TO": "Tocantins",
     }
 
+class Pessoa(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    
     TIPO = [
         ("FUNCIONARIO", "Funcionario"),
-        ("LOCADOR", "Locador", "FORNCEDOR", "Fornecedor"),
+        ("LOCADOR", "Locador")
     ]
 
     nome_completo = models.CharField(("nome"), max_length=50)
@@ -69,8 +67,6 @@ class Pessoa(models.Model):
     estado = models.CharField(("estado"), choices=ESTADOS, null=True, blank=True)
     tipo = models.CharField(("tipo"), choices=TIPO, null=True, blank=True)
     observacoes = models.TextField(("observações"), null=True, blank=True)
-
-    # TEM MUITOS CARGOS? TEM VARIAÇÃO DE PERMISSÕES ENTRE CARGOS?
 
 
 class Funcionario(models.Model):
@@ -116,7 +112,7 @@ class Procedimento(models.Model):
         on_delete=models.CASCADE,
     )
     tempo_medio = models.DurationField(
-        ("Tempo Médio do Procedimento"), null=True, blank=True
+        ("tempo médio do procedimento"), null=True, blank=True
     )
 
 
@@ -136,7 +132,7 @@ class Agendamento(models.Model):
 
 class Fornecedor(models.Model):
     nome = models.CharField("nome da empresa ou razão social", max_length=100)
-    cnpj = models.CharField("CNPJ", max_length=14, unique=True)
+    cnpj = models.CharField("cnpj", max_length=14, unique=True)
 
     rua = models.CharField("rua", max_length=100)
     numero = models.CharField("número", max_length=10)
@@ -149,13 +145,12 @@ class Fornecedor(models.Model):
     email = models.EmailField("e-mail", max_length=100, null=True, blank=True)
     site = models.URLField("site", max_length=100, null=True, blank=True)
 
-    def endereco_completo(self):
+    def __str__(self):
         return f"{self.rua}, {self.numero} - {self.cidade} - {self.estado} - CEP: {self.cep}"
 
 
 class Categoria(models.Model):
     nome = models.CharField("nome da categoria", max_length=50, unique=True)
-
     def __str__(self):
         return self.nome
 
@@ -174,7 +169,7 @@ class Produto(models.Model):
     )  # tipo de medida
     fabricante = models.CharField("fabricante", max_length=100)
     fornecedor = models.ForeignKey(
-        "Fornecedor", verbose_name="fornecedor", on_delete=models.CASCADE
+        "fornecedor", verbose_name="fornecedor", on_delete=models.CASCADE
     )
     categoria = models.ForeignKey(
         Categoria,
