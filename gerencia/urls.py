@@ -5,28 +5,34 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('visitante/', include('visitante.urls'), name='visitante'),
-    
-    
+    path("", views.index, name="index"),
+    path("visitante/", include("visitante.urls"), name="visitante"),
     # PESSOAS
     path("pessoa/lista/", views.lista_pessoa, name="lista_pessoa"),
     path("pessoa/cadastro/", views.cadastro_pessoa, name="cadastro_pessoa"),
     path("pessoa/editar/<int:id>/", views.editar_pessoa, name="editar_pessoa"),
-
     # FUNCIONARIO
     path("funcionario/lista/", views.lista_funcionario, name="lista_funcionario"),
-    path("funcionario/cadastro/", views.cadastro_funcionario, name="cadastro_funcionario"),
-    path("funcionario/editar/<int:id>/", views.editar_funcionario, name="editar_funcionario"),
-    
+    path(
+        "funcionario/cadastro/", views.cadastro_funcionario, name="cadastro_funcionario"
+    ),
+    path(
+        "funcionario/editar/<int:id>/",
+        views.editar_funcionario,
+        name="editar_funcionario",
+    ),
     # AGENDA
     path("agendamento/", views.cadastro_agendamento, name="cadastro_agendamento"),
-    
-    # SERVICOS
-    path("procedimento/", views.cadastro_procedimento, name="cadastro_procedimento"),
-
-    #FUNCIONÁRIOS
-    path("funcionario/lista/", views.lista_funcionario, name="lista_funcionario"),
-    path("funcionario/cadastro/", views.cadastro_funcionario, name="cadastro_funcionario"),
-    path("funcionario/editar/<int:id>/", views.editar_funcionario, name="editar_funcionario"),
+    # PROCEDIMENTOS
+    path("procedimentos/", views.lista_procedimentos, name="lista_procedimentos"),
+    path(
+        "procedimentos/cadastrar/",
+        views.cadastrar_procedimento,
+        name="cadastrar_procedimento",
+    ),
+    path(
+        "procedimentos/editar/<int:id>/",
+        views.editar_procedimento,
+        name="editar_procedimento",
+    ),
 ]
