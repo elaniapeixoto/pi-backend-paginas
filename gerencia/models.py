@@ -10,7 +10,7 @@ Classes necessárias:
     locador  #feito
     fornecedores #Feito
     produtos #feito
-    vendas 
+    vendas #nao será necessário fazer por enquanto
     agenda  #feito
     procedimentos  #feito
    
