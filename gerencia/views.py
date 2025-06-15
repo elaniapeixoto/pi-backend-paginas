@@ -1,6 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import *
+from .models import Pessoa, Funcionario, Procedimento
+
 
 estados = {
     "AC": "Acre",
@@ -145,12 +147,11 @@ def cadastro_funcionario(request):
             valor = dados.get(campo)
             setattr(funcionario, campo, valor if valor != "" else None)
 
-        
-        if (funcionario.save()):
+        if funcionario.save():
             pessoa = Pessoa.objects.get(id=pessoa_id)
-            setattr(pessoa, 'tipo', 'FUNCIONARIO')
+            setattr(pessoa, "tipo", "FUNCIONARIO")
             pessoa.save()
-        
+
         return redirect("lista_funcionario")
 
     return render(
