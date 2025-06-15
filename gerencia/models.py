@@ -75,19 +75,19 @@ class Funcionario(models.Model):
         null=True,
         blank=True,
     )
-    cargo = models.CharField(("cargo"), max_length=50)
-    salario = models.DecimalField(("salário"), max_digits=5, decimal_places=2)
+    cargo = models.CharField(("cargo"), max_length=50, null =True, blank= True)
+    salario = models.IntegerField(("salário"), null =True, blank= True)
     pis = models.CharField(("pis"), max_length=13)
     entrada = models.DateField(("data de entrada"), auto_now=False, auto_now_add=True)
-    saida = models.DateField(("data de saida"), auto_now=False, auto_now_add=False)
+    saida = models.DateField(("data de saida"), auto_now=False, auto_now_add=False, null =True, blank= True)
 
 
 class Locador(models.Model):
     pessoa = models.OneToOneField(
         Pessoa, verbose_name=("locador"), on_delete=models.CASCADE
     )
-    valor_aluguel = models.DecimalField(
-        ("valor do aluguel"), max_digits=5, decimal_places=2
+    valor_aluguel = models.IntegerField(
+        ("valor do aluguel")
     )
     inicio_contrato = models.DateField(
         ("inicio do contrato"), auto_now=False, auto_now_add=False
@@ -102,8 +102,8 @@ class Procedimento(models.Model):
     procedimento = models.CharField(
         ("procedimento"), max_length=50, unique=True, null=False
     )
-    valor = models.DecimalField(("valor"), max_digits=5, decimal_places=2)
-    profissionais = models.OneToOneField(
+    valor = models.IntegerField(("valor"))
+    profissional = models.OneToOneField(
         Funcionario,
         related_name="profissional_que_realiza",
         null=True,

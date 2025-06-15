@@ -145,7 +145,12 @@ def cadastro_funcionario(request):
             valor = dados.get(campo)
             setattr(funcionario, campo, valor if valor != "" else None)
 
-        funcionario.save()
+        
+        if (funcionario.save()):
+            pessoa = Pessoa.objects.get(id=pessoa_id)
+            setattr(pessoa, 'tipo', 'FUNCIONARIO')
+            pessoa.save()
+        
         return redirect("lista_funcionario")
 
     return render(

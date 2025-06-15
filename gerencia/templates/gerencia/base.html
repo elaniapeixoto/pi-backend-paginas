@@ -89,9 +89,17 @@
                         </div>
                     </div>
                 </th>
-                <th><a href="#">Funcionarios</a></th>
+                <th>
+                    <div class="dropdown">
+                        <a href="#">Funcionario</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'cadastro_funcionario' %}">Cadastro</a>
+                            <a href="{% url 'lista_funcionario' %}">Lista</a>
+                        </div>
+                    </div>
                 <th><a href="#">Alugueis</a></th>
                 <th><a href="#">Procedimentos</a></th>
+                <th><a href="#">Usuario</a></th>
                 <th><a href="{% url 'index' %}">Agendamento</a></th>
                 <th>
                     <form action="{% url 'logout' %}" method="post" style="display: inline;">
