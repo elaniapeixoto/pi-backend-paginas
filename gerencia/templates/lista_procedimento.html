@@ -1,7 +1,38 @@
 {% extends 'gerencia/base.html' %}
-
 {% load static %}
 
 {% block content %}
+
+<table class="content w-50" align="center">
+          <thead align="center">
+                    <tr>
+                              <th>ID</th>
+                              <th>Nome do Procedimento</th>
+                              <th>Profissional</th>
+                              <th>Valor</th>
+                              <th>Tempo Médio</th>
+                    </tr>
+          </thead>
+          <tbody align="center">
+                    {% for procedimento in procedimentos %}
+                    <tr class="border-top border-success">
+                              <td><a href="{% url 'editar_procedimento' procedimento.id %}">{{ procedimento.id }}</a>
+                              </td>
+                              <td><a href="{% url 'editar_procedimento' procedimento.id %}">{{ procedimento.nome }}</a>
+                              </td>
+                              <td><a href="{% url 'editar_procedimento' procedimento.id %}">{{ procedimento.profissional
+                                                  }}</a></td>
+                              <td><a href="{% url 'editar_procedimento' procedimento.id %}">R$ {{ procedimento.valor
+                                                  }}</a></td>
+                              <td><a href="{% url 'editar_procedimento' procedimento.id %}">{{ procedimento.tempo_medio
+                                                  }}</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                              <td colspan="5" align="center">Nenhum procedimento cadastrado.</td>
+                    </tr>
+                    {% endfor %}
+          </tbody>
+</table>
 
 {% endblock %}

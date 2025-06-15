@@ -8,9 +8,9 @@ Classes necessárias:
     pessoas   #feito
     funcionarios   #feito
     locador  #feito
-    fornecedores #Feito
+    fornecedores #nao será necessário fazer por enquanto
     produtos #feito
-    vendas 
+    vendas #nao será necessário fazer por enquanto
     agenda  #feito
     procedimentos  #feito
    
