@@ -233,7 +233,7 @@ def cadastro_usuario(request):
             )
 
             pessoa = Pessoa.objects.get(id=pessoa_id)
-            pessoa.user = user
+            pessoa.usuario = user
             pessoa.save()
 
             messages.success(request, 'Usuário cadastrado com sucesso e vinculado à pessoa!')
