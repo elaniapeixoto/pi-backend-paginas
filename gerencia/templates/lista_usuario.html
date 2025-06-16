@@ -18,17 +18,18 @@
     <tbody align='center'>
         {% for usuario in usuarios %}
             <tr class='border-top border-success'>
-                <td><a href="{% url 'editar_usuario' pessoa.id %}">{{ usuario.id }}</a></td>
-                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ usuario.username }}</a></td>
-                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ usuario.email }}</a></td>
+                <td><a href="">{{ usuario.id }}</a></td>
+                <td><a href="">{{ usuario.username }}</a></td>
+                <td><a href="">{{ usuario.email }}</a></td>
                 
                 <td>
+                    <!--
                 <form action="{% url 'deletar_pessoa' pessoa.id %}" method="post" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja deletar?');">
                         Deletar
                     </button>
-                </form>
+                </form>-->
             </td>
             </tr>
         {% empty %}
