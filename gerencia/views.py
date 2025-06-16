@@ -247,5 +247,5 @@ def cadastro_usuario(request):
             messages.error(request, f'Erro ao cadastrar: {str(e)}')
 
     pessoas = Pessoa.objects.filter(user__isnull=True)
-    return render(request, 'seu_template/cadastro_usuario.html', {'pessoas': pessoas})
+    return render(request, 'cadastro_usuario.html', {'pessoas': pessoas})
 
