@@ -216,7 +216,7 @@ def deletar_funcionario(request, id):
 
 @login_required
 def lista_usuario(request):
-    usuarios = Usuario.objects.all()
+    usuarios = User.objects.all()
     return render(request, "lista_usuario.html", {"usuarios": usuarios})
 
 def cadastro_usuario(request):
