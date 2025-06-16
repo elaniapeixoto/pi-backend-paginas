@@ -99,7 +99,15 @@
                     </div>
                 <th><a href="#">Alugueis</a></th>
                 <th><a href="#">Procedimentos</a></th>
-                <th><a href="#">Usuario</a></th>
+                <th>
+                    <div class="dropdown">
+                        <a href="#">Usuario</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'cadastro_usuario' %}">Cadastro</a>
+                            <a href="{% url 'lista_usuario' %}">Lista</a>
+                        </div>
+                    </div>
+                </th>
                 <th><a href="{% url 'index' %}">Agendamento</a></th>
                 <th>
                     <form action="{% url 'logout' %}" method="post" style="display: inline;">
