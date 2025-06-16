@@ -233,7 +233,7 @@ def cadastro_usuario(request):
             )
 
             pessoa = Pessoa.objects.get(id=pessoa_id)
-            pessoa.usuario = user
+            pessoa.user = user
             pessoa.save()
 
             messages.success(request, 'Usuário cadastrado com sucesso e vinculado à pessoa!')
@@ -244,6 +244,6 @@ def cadastro_usuario(request):
         except Exception as e:
             messages.error(request, f'Erro ao cadastrar: {str(e)}')
 
-    pessoas = Pessoa.objects.filter(usuario__isnull=True)
+    pessoas = Pessoa.objects.filter(user__isnull=True)
     return render(request, 'seu_template/cadastro_usuario.html', {'pessoas': pessoas})
 
