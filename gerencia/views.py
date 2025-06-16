@@ -107,6 +107,13 @@ def editar_pessoa(request, id):
         request, "cadastro_pessoa.html", {"pessoa": pessoa, "estados": estados}
     )
 
+def deletar_pessoa(request, id):
+    try:
+        pessoa = Pessoa.objects.get(id=id)
+        pessoa.delete()
+    except Pessoa.DoesNotExist:
+        messages.error(request, "Pessoa não encontrada.")
+    return redirect("lista_pessoa")
 
 # @login_required
 # def cadastro_usuario(request):
@@ -122,6 +129,13 @@ def cadastro_agendamento(request):
 def cadastro_procedimento(request):
     return render(request, "index.html")
 
+@login_required
+def lista_procedimento(request):
+    return render(request, "index.html")
+
+@login_required
+def editar_procedimento(request):
+    return render(request, "index.html")
 
 # funcionário
 @login_required
@@ -189,3 +203,12 @@ def editar_funcionario(request, id):
         "cadastro_funcionario.html",
         {"funcionario": funcionario, "pessoas": pessoas_disponiveis},
     )
+
+def deletar_funcionario(request, id):
+    try:
+        funcionario = Funcionario.objects.get(id=id)
+        funcionario.delete()
+    except Funcionario.DoesNotExist:
+        pass
+    return redirect("lista_funcionario")
+

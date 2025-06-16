@@ -12,6 +12,7 @@
             <th>Salário</th>
             <th>Entrada</th>
             <th>Saída</th>
+            <th>deletar</th>
         </tr>
     </thead>
     <tbody align='center'>
@@ -40,6 +41,15 @@
                 <a href="{% url 'editar_funcionario' funcionario.id %}">
                     {% if funcionario.saida %}{{ funcionario.saida|date:"d/m/Y" }}{% else %} - {% endif %}
                 </a>
+            </td>
+        </tr>
+        <td>
+                <form action="{% url 'deletar_funcionario' funcionario.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja deletar?');">
+                        Deletar
+                    </button>
+                </form>
             </td>
         </tr>
         {% empty %}

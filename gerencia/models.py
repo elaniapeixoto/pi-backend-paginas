@@ -103,12 +103,12 @@ class Procedimento(models.Model):
         ("procedimento"), max_length=50, unique=True, null=False
     )
     valor = models.IntegerField(("valor"))
-    profissional = models.OneToOneField(
-        Funcionario,
-        related_name="profissional_que_realiza",
-        null=True,
-        on_delete=models.CASCADE,
-    )
+    # profissional = models.OneToOneField(
+    #     Funcionario,
+    #     related_name="profissional_que_realiza",
+    #     null=True,
+    #     on_delete=models.CASCADE,
+    # )
     tempo_medio = models.DurationField(
         ("tempo médio do procedimento"), null=True, blank=True
     )
