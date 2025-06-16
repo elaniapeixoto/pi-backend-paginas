@@ -3,7 +3,9 @@
 {% load static %}
 {% block title %}Cadastro de usuario{% endblock title %}
 {% block content %}
-
+<form method='post' action="{% url 'cadastro_usuario'%}">
+        {% csrf_token %}
+        <table class='content w-50'>
         <tr>
             <th><label for="username">Nome de usuário:</label></th>
             <td><input type="text" id="username" name="username" required></td>
