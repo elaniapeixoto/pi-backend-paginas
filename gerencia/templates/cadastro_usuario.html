@@ -1,0 +1,38 @@
+{% extends 'gerencia/base.html' %}
+
+{% load static %}
+{% block title %}Cadastro de usuario{% endblock title %}
+{% block content %}
+
+        <tr>
+            <th><label for="username">Nome de usuário:</label></th>
+            <td><input type="text" id="username" name="username" required></td>
+        </tr>
+        
+        <tr>
+            <th><label for="password">Senha:</label></th>
+            <td><input type="password" id="password" name="password" required></td>
+        </tr>
+        
+        <tr>
+            <th><label for="email">Email:</label></th>
+            <td><input type="email" id="email" name="email" required></td>
+        </tr>
+        
+        <tr>
+            <th><label for="pessoa_id">Vincular à pessoa:</label></th>
+            <td><select id="pessoa_id" name="pessoa_id" required>
+                <option value="">Selecione uma pessoa</option>
+                {% for pessoa in pessoas %}
+                    <option value="{{ pessoa.id }}">{{ pessoa.nome }}</option>
+                {% endfor %}
+            </select></td>
+        </tr>
+    </table>
+   <div align='center'>
+        <a href="{% url 'lista_funcionario' %}" class="btn btn-secondary">Cancelar</a> &nbsp;&nbsp;
+        <input class='btn btn-success' type="submit" value="Salvar">
+    </div>
+
+</form>
+{% endblock %}
