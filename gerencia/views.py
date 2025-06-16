@@ -212,3 +212,38 @@ def deletar_funcionario(request, id):
         pass
     return redirect("lista_funcionario")
 
+@login_required
+def lista_usuario(request):
+    usuarios = Funcionario.objects.select_related("pessoa").all()
+    return render(request, "lista_usuario.html", {"usuarios": usuarios})
+
+def cadastro_usuario(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        pessoa_id = request.POST.get('pessoa_id')
+
+        try:
+            User = get_user_model()
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                email=email
+            )
+
+            pessoa = Pessoa.objects.get(id=pessoa_id)
+            pessoa.usuario = user
+            pessoa.save()
+
+            messages.success(request, 'Usuário cadastrado com sucesso e vinculado à pessoa!')
+            return redirect('alguma_view_de_sucesso')
+
+        except Pessoa.DoesNotExist:
+            messages.error(request, 'Pessoa não encontrada.')
+        except Exception as e:
+            messages.error(request, f'Erro ao cadastrar: {str(e)}')
+
+    pessoas = Pessoa.objects.filter(usuario__isnull=True)
+    return render(request, 'seu_template/cadastro_usuario.html', {'pessoas': pessoas})
+
