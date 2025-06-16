@@ -23,4 +23,7 @@ urlpatterns = [
     path("procedimentos/", views.lista_procedimento, name="lista_procedimentos"),
     path("procedimentos/cadastro/", views.cadastro_procedimento, name="cadastro_procedimento"),
     path("procedimentos/editar/<int:id>/",views.editar_procedimento, name="editar_procedimento"),
+
+    path("usuario/lista/", views.lista_usuario, name="lista_usuario"),
+    path("usuario/cadastro/", views.cadastro_usuario, name="cadastro_usuario"),
 ]
