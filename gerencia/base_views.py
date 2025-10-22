@@ -14,22 +14,26 @@ class BaseModelFormView(ABC):
     # Devem ser implementados pelas subclasses
 
     @abstractmethod
-    def GET_MODEL_CLASS(self):
+    def get_model_class(self):  # CORRIGIDO: de GET_MODEL_CLASS para get_model_class
         """HOOK OBRIGATÓRIO: retorna o modelo (ex: Pessoa, Funcionario)."""
         pass
 
     @abstractmethod
-    def GET_TEMPLATE_NAME(self):
+    def get_template_name(
+        self,
+    ):  # CORRIGIDO: de GET_TEMPLATE_NAME para get_template_name
         """HOOK OBRIGATÓRIO: retorna o template a ser renderizado."""
         pass
 
     @abstractmethod
-    def GET_SUCCESS_URL(self):
+    def get_success_url(self):  # CORRIGIDO: de GET_SUCCESS_URL para get_success_url
         """HOOK OBRIGATÓRIO: URL para redirecionamento após sucesso."""
         pass
 
     @abstractmethod
-    def CLEAN_AND_APPLY_DATA(self, request, instance):
+    def clean_and_apply_data(
+        self, request, instance
+    ):  # CORRIGIDO: de CLEAN_AND_APPLY_DATA para clean_and_apply_data
         """HOOK OBRIGATÓRIO: aplica os dados do POST na instância."""
         pass
 
@@ -39,7 +43,7 @@ class BaseModelFormView(ABC):
     def get_object(self, **kwargs):
         """Retorna objeto existente ou cria novo."""
         pk = kwargs.get("id")
-        Model = self.GET_MODEL_CLASS()
+        Model = self.get_model_class()  # CORRIGIDO: Chama get_model_class (minúsculas)
 
         if pk:
             try:
@@ -55,7 +59,7 @@ class BaseModelFormView(ABC):
             context["object"] = instance
         return context
 
-    def AFTER_SAVE(self, request, instance):
+    def after_save(self, request, instance):  # CORRIGIDO: de AFTER_SAVE para after_save
         """HOOK PÓS-SAVE: executado após salvar o objeto no banco."""
         pass
 
@@ -67,24 +71,34 @@ class BaseModelFormView(ABC):
 
         # Se objeto não encontrado em edição, redireciona
         if not instance and kwargs.get("id"):
-            return redirect(self.GET_SUCCESS_URL())
+            return redirect(
+                self.get_success_url()
+            )  # CORRIGIDO: Chama get_success_url (minúsculas)
 
         if request.method == "POST":
             # Aplica dados via hook obrigatório
-            self.CLEAN_AND_APPLY_DATA(request, instance)
+            self.clean_and_apply_data(
+                request, instance
+            )  # CORRIGIDO: Chama clean_and_apply_data (minúsculas)
 
             # Salva objeto
             instance.save()
 
             # CHAMA O HOOK PÓS-SAVE (IMPORTANTE)
-            self.AFTER_SAVE(request, instance)
+            self.after_save(
+                request, instance
+            )  # CORRIGIDO: Chama after_save (minúsculas)
 
             # Redireciona após sucesso
-            return redirect(self.GET_SUCCESS_URL())
+            return redirect(
+                self.get_success_url()
+            )  # CORRIGIDO: Chama get_success_url (minúsculas)
 
         # Renderiza formulário (GET)
         context = self.get_context_data(request, instance=instance, **kwargs)
-        return render(request, self.GET_TEMPLATE_NAME(), context)
+        return render(
+            request, self.get_template_name(), context
+        )  # CORRIGIDO: Chama get_template_name (minúsculas)
 
 
 # Wrapper para urls.py
