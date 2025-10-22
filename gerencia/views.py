@@ -1,39 +1,22 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+
 from .models import Pessoa, Funcionario, Procedimento
+
+# Importa o Template Method base
+from .base_views import BaseModelFormView, base_view_wrapper
 
 
 estados = {
-    "AC": "Acre",
-    "AL": "Alagoas",
-    "AP": "Amapá",
-    "AM": "Amazonas",
-    "BA": "Bahia",
-    "CE": "Ceará",
-    "DF": "Distrito Federal",
-    "ES": "Espírito Santo",
-    "GO": "Goiás",
-    "MA": "Maranhão",
-    "MT": "Mato Grosso",
-    "MS": "Mato Grosso do Sul",
-    "MG": "Minas Gerais",
-    "PA": "Pará",
-    "PB": "Paraíba",
-    "PR": "Paraná",
-    "PE": "Pernambuco",
-    "PI": "Piauí",
-    "RJ": "Rio de Janeiro",
-    "RN": "Rio Grande do Norte",
-    "RS": "Rio Grande do Sul",
-    "RO": "Rondônia",
-    "RR": "Roraima",
-    "SC": "Santa Catarina",
-    "SP": "São Paulo",
-    "SE": "Sergipe",
-    "TO": "Tocantins",
+    "AC": "Acre", "AL": "Alagoas", "AP": "Amapá", "AM": "Amazonas", "BA": "Bahia", 
+    "CE": "Ceará", "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás", 
+    "MA": "Maranhão", "MT": "Mato Grosso", "MS": "Mato Grosso do Sul", "MG": "Minas Gerais", 
+    "PA": "Pará", "PB": "Paraíba", "PR": "Paraná", "PE": "Pernambuco", "PI": "Piauí", 
+    "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte", "RS": "Rio Grande do Sul", 
+    "RO": "Rondônia", "RR": "Roraima", "SC": "Santa Catarina", "SP": "São Paulo", 
+    "SE": "Sergipe", "TO": "Tocantins",
 }
 estados = estados.items()
 
@@ -46,68 +29,55 @@ def index(request):
 @login_required
 def lista_pessoa(request):
     pessoas = Pessoa.objects.all()
-
     return render(request, "lista_pessoa.html", {"pessoas": pessoas})
 
 
-@login_required
-def cadastro_pessoa(request):
-    # RECEBE O REQUEST PARA SALVAR OS DADOS DA PESSOA E RETORNA A LISTA
-    if request.method == "POST":
+# ----------------------------------------------------------------------
+# VIEWS DE PESSOA USANDO TEMPLATE METHOD
+# ----------------------------------------------------------------------
+
+class PessoaView(BaseModelFormView):
+    # Métodos Abstratos
+    def get_model_class(self): return Pessoa
+    def get_template_name(self): return "cadastro_pessoa.html"
+    def get_success_url(self): return "lista_pessoa"
+
+   # hook: método que aplica os dados específicos da pessoa
+    def clean_and_apply_data(self, request, instance):
         dados = request.POST.dict()
-        pessoa = Pessoa()
-        # VERIFICA CAMPOS VAZIOS
-        for campo in [
-            "nome_completo",
-            "cpf",
-            "numero",
-            "email",
-            "data_nascimento",
-            "cep",
-            "cidade",
-            "estado",
-            "observacoes",
-        ]:
+        campos = [
+            "nome_completo", "cpf", "numero", "email", "data_nascimento", 
+            "cep", "cidade", "estado", "observacoes",
+        ]
+        for campo in campos:
             valor = dados.get(campo)
-            setattr(pessoa, campo, valor if valor != "" else None)
+            setattr(instance, campo, valor if valor != "" else None)
+        return instance
 
-        pessoa.save()
-        return redirect("lista_pessoa")
+    # Hook: Adiciona 'estados' ao contexto
+    def get_context_data(self, request, instance=None, **kwargs):
+        context = super().get_context_data(request, instance=instance, **kwargs)
+        context["estados"] = estados
+        return context
 
-    return render(request, "cadastro_pessoa.html", {"estados": estados})
+
+cadastro_pessoa = base_view_wrapper(PessoaView)
 
 
-def editar_pessoa(request, id):
-    # BUSCA PESSOA PELO ID, SE NAO ENCONTRAR RETORNA PARA A LISTA
-    try:
-        pessoa = Pessoa.objects.get(id=id)
-    except Pessoa.DoesNotExist:
-        return render(request, "lista_pessoa.html", {"warning": True})
+class PessoaEditView(PessoaView):
+    # Hook: Sobrescreve a busca para Edição
+    def get_object(self, **kwargs):
+        pk = kwargs.get("id")
+        if pk:
+            try:
+                return self.get_model_class().objects.get(id=pk)
+            except self.get_model_class().DoesNotExist:
+                return None
+        return None
 
-    # SE FOR UM REQUEST VAI EDITAR OS DADOS DA PESSOA
-    if request.method == "POST":
-        dados = request.POST.dict()
-        # VERIFICA CAMPOS VAZIOS
-        for campo in [
-            "nome_completo",
-            "cpf",
-            "numero",
-            "email",
-            "data_nascimento",
-            "cep",
-            "cidade",
-            "estado",
-            "observacoes",
-        ]:
-            valor = dados.get(campo)
-            setattr(pessoa, campo, valor if valor != "" else None)
-        pessoa.save()
-        return redirect("lista_pessoa")
 
-    # MOSTRA A TELA DE EDIÇÃO COM AS INFORMAÇÕES DA PESSOA
-    return render(
-        request, "cadastro_pessoa.html", {"pessoa": pessoa, "estados": estados}
-    )
+editar_pessoa = base_view_wrapper(PessoaEditView)
+
 
 def deletar_pessoa(request, id):
     try:
@@ -117,10 +87,10 @@ def deletar_pessoa(request, id):
         messages.error(request, "Pessoa não encontrada.")
     return redirect("lista_pessoa")
 
-# @login_required
-# def cadastro_usuario(request):
-#     return render(request, "usuario/cadastro_usuario.html")
 
+# ----------------------------------------------------------------------
+# VIEWS FIXAS (Agendamento, Procedimento)
+# ----------------------------------------------------------------------
 
 @login_required
 def cadastro_agendamento(request):
@@ -131,80 +101,85 @@ def cadastro_agendamento(request):
 def cadastro_procedimento(request):
     return render(request, "index.html")
 
+
 @login_required
 def lista_procedimento(request):
     return render(request, "index.html")
+
 
 @login_required
 def editar_procedimento(request):
     return render(request, "index.html")
 
-# funcionário
+
+# ----------------------------------------------------------------------
+# VIEWS REFATORADAS COM TEMPLATE METHOD (FUNCIONÁRIO)
+# ----------------------------------------------------------------------
+
 @login_required
 def lista_funcionario(request):
     funcionarios = Funcionario.objects.select_related("pessoa").all()
     return render(request, "lista_funcionario.html", {"funcionarios": funcionarios})
 
 
-@login_required
-def cadastro_funcionario(request):
-    pessoas_disponiveis = Pessoa.objects.exclude(
-        id__in=Funcionario.objects.values_list("pessoa_id", flat=True)
-    )
+class FuncionarioView(BaseModelFormView):
+    # Métodos Abstratos
+    def get_model_class(self): return Funcionario
+    def get_template_name(self): return "cadastro_funcionario.html"
+    def get_success_url(self): return "lista_funcionario"
 
-    if request.method == "POST":
+    # Hook: Aplica dados (incluindo FK)
+    def clean_and_apply_data(self, request, instance):
         dados = request.POST.dict()
-        funcionario = Funcionario()
 
         pessoa_id = dados.get("pessoa")
-        funcionario.pessoa = Pessoa.objects.get(id=pessoa_id) if pessoa_id else None
-
-        for campo in ["cargo", "salario", "pis", "entrada", "saida"]:
+        if pessoa_id:
+            instance.pessoa = Pessoa.objects.get(id=pessoa_id)
+        
+        campos = ["cargo", "salario", "pis", "entrada", "saida"]
+        for campo in campos:
             valor = dados.get(campo)
-            setattr(funcionario, campo, valor if valor != "" else None)
+            setattr(instance, campo, valor if valor != "" else None)
+            
+        return instance
 
-        if funcionario.save():
-            pessoa = Pessoa.objects.get(id=pessoa_id)
-            setattr(pessoa, "tipo", "FUNCIONARIO")
+    # hook pós-save: atualiza o tipo da pessoa (lógica original)
+    def AFTER_SAVE(self, request, instance):
+        if instance.pessoa:
+            pessoa = instance.pessoa
+            pessoa.tipo = "FUNCIONARIO"
             pessoa.save()
 
-        return redirect("lista_funcionario")
+    # hook: insere as pessoas disponíveis no contexto
+    def get_context_data(self, request, instance=None, **kwargs):
+        context = super().get_context_data(request, instance=instance, **kwargs)
+        
+        funcionario_id = instance.id if instance and instance.pk else None
+        pessoas_ocupadas_ids = Funcionario.objects.exclude(id=funcionario_id).values_list("pessoa_id", flat=True)
+        
+        context["pessoas"] = Pessoa.objects.exclude(id__in=pessoas_ocupadas_ids)
+        
+        if instance and instance.pk:
+            context["funcionario"] = instance
+            
+        return context
 
-    return render(
-        request, "cadastro_funcionario.html", {"pessoas": pessoas_disponiveis}
-    )
+
+cadastro_funcionario = base_view_wrapper(FuncionarioView)
 
 
-@login_required
-def editar_funcionario(request, id):
-    try:
-        funcionario = Funcionario.objects.get(id=id)
-    except Funcionario.DoesNotExist:
-        return redirect("lista_funcionario")
+class FuncionarioEditView(FuncionarioView):
+    def get_object(self, **kwargs):
+        pk = kwargs.get('id')
+        if pk:
+            try:
+                return self.get_model_class().objects.get(id=pk)
+            except self.get_model_class().DoesNotExist:
+                return None
+        return None
 
-    if request.method == "POST":
-        dados = request.POST.dict()
+editar_funcionario = base_view_wrapper(FuncionarioEditView)
 
-        pessoa_id = dados.get("pessoa")
-        funcionario.pessoa = Pessoa.objects.get(id=pessoa_id) if pessoa_id else None
-
-        for campo in ["cargo", "salario", "pis", "entrada", "saida"]:
-            valor = dados.get(campo)
-            setattr(funcionario, campo, valor if valor != "" else None)
-
-        funcionario.save()
-        return redirect("lista_funcionario")
-
-    pessoas_disponiveis = Pessoa.objects.exclude(
-        id__in=Funcionario.objects.exclude(id=funcionario.id).values_list(
-            "pessoa_id", flat=True
-        )
-    )
-    return render(
-        request,
-        "cadastro_funcionario.html",
-        {"funcionario": funcionario, "pessoas": pessoas_disponiveis},
-    )
 
 def deletar_funcionario(request, id):
     try:
@@ -214,40 +189,73 @@ def deletar_funcionario(request, id):
         pass
     return redirect("lista_funcionario")
 
+
+# ----------------------------------------------------------------------
+# VIEWS REFETORADAS COM TEMPLATE METHOD (Usuário)
+# Substitui a função antiga 'cadastro_usuario'
+# ----------------------------------------------------------------------
+
 @login_required
 def lista_usuario(request):
     User = get_user_model()
-
     usuarios = User.objects.all()
     return render(request, "lista_usuario.html", {"usuarios": usuarios})
 
-def cadastro_usuario(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        email = request.POST.get('email')
-        pessoa_id = request.POST.get('pessoa_id')
 
+class UsuarioView(BaseModelFormView):
+    """Implementa o Template Method para Cadastro de Usuários e vínculo com Pessoa."""
+
+    # Métodos Abstratos
+    def get_model_class(self): return get_user_model()
+    def get_template_name(self): return "cadastro_usuario.html"
+    def get_success_url(self): return "alguma_view_de_sucesso" 
+
+    # hook principal: salva e vincula aqui
+    def clean_and_apply_data(self, request, user_instance):
+        dados = request.POST.dict()
+        username = dados.get("username")
+        password = dados.get("password")
+        email = dados.get("email")
+        pessoa_id = dados.get("pessoa_id")
+        
+        User = get_user_model()
+        
+        # lógica de try/except e criação/vínculo mantidas aqui
         try:
-            User = get_user_model()
             user = User.objects.create_user(
-                username=username,
-                password=password,
+                username=username, 
+                password=password, 
                 email=email
             )
-
+            
             pessoa = Pessoa.objects.get(id=pessoa_id)
             pessoa.usuario = user
             pessoa.save()
-
+            
             messages.success(request, 'Usuário cadastrado com sucesso e vinculado à pessoa!')
-            return redirect('alguma_view_de_sucesso')
-
+            
         except Pessoa.DoesNotExist:
             messages.error(request, 'Pessoa não encontrada.')
+        # levanta a exceção para interromper o dispatch e evitar redirecionamento/salvamento incorreto
+
+            raise
         except Exception as e:
             messages.error(request, f'Erro ao cadastrar: {str(e)}')
+            raise 
+        
+        return user_instance
+        
+    # hook pós-save: sobrescreve salvamento padrão do template method
 
-    pessoas = Pessoa.objects.filter(user__isnull=True)
-    return render(request, 'cadastro_usuario.html', {'pessoas': pessoas})
+    def AFTER_SAVE(self, request, instance):
+        pass 
+        
+    # Hook Contexto: Adiciona Pessoas disponíveis para vínculo
+    def get_context_data(self, request, instance=None, **kwargs):
+        context = super().get_context_data(request, instance=instance, **kwargs)
+        # Filtra Pessoas que ainda não estão vinculadas a um usuário
+        context["pessoas"] = Pessoa.objects.filter(usuario__isnull=True)
+        return context
 
+# Substitui a função 'cadastro_usuario' antiga
+cadastro_usuario = base_view_wrapper(UsuarioView)
