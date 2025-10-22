@@ -10,13 +10,33 @@ from .base_views import BaseModelFormView, base_view_wrapper
 
 
 estados = {
-    "AC": "Acre", "AL": "Alagoas", "AP": "Amapá", "AM": "Amazonas", "BA": "Bahia", 
-    "CE": "Ceará", "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás", 
-    "MA": "Maranhão", "MT": "Mato Grosso", "MS": "Mato Grosso do Sul", "MG": "Minas Gerais", 
-    "PA": "Pará", "PB": "Paraíba", "PR": "Paraná", "PE": "Pernambuco", "PI": "Piauí", 
-    "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte", "RS": "Rio Grande do Sul", 
-    "RO": "Rondônia", "RR": "Roraima", "SC": "Santa Catarina", "SP": "São Paulo", 
-    "SE": "Sergipe", "TO": "Tocantins",
+    "AC": "Acre",
+    "AL": "Alagoas",
+    "AP": "Amapá",
+    "AM": "Amazonas",
+    "BA": "Bahia",
+    "CE": "Ceará",
+    "DF": "Distrito Federal",
+    "ES": "Espírito Santo",
+    "GO": "Goiás",
+    "MA": "Maranhão",
+    "MT": "Mato Grosso",
+    "MS": "Mato Grosso do Sul",
+    "MG": "Minas Gerais",
+    "PA": "Pará",
+    "PB": "Paraíba",
+    "PR": "Paraná",
+    "PE": "Pernambuco",
+    "PI": "Piauí",
+    "RJ": "Rio de Janeiro",
+    "RN": "Rio Grande do Norte",
+    "RS": "Rio Grande do Sul",
+    "RO": "Rondônia",
+    "RR": "Roraima",
+    "SC": "Santa Catarina",
+    "SP": "São Paulo",
+    "SE": "Sergipe",
+    "TO": "Tocantins",
 }
 estados = estados.items()
 
@@ -36,18 +56,31 @@ def lista_pessoa(request):
 # VIEWS DE PESSOA USANDO TEMPLATE METHOD
 # ----------------------------------------------------------------------
 
+
 class PessoaView(BaseModelFormView):
     # Métodos Abstratos
-    def get_model_class(self): return Pessoa
-    def get_template_name(self): return "cadastro_pessoa.html"
-    def get_success_url(self): return "lista_pessoa"
+    def get_model_class(self):
+        return Pessoa
 
-   # hook: método que aplica os dados específicos da pessoa
+    def get_template_name(self):
+        return "cadastro_pessoa.html"
+
+    def get_success_url(self):
+        return "lista_pessoa"
+
+    # hook: método que aplica os dados específicos da pessoa
     def clean_and_apply_data(self, request, instance):
         dados = request.POST.dict()
         campos = [
-            "nome_completo", "cpf", "numero", "email", "data_nascimento", 
-            "cep", "cidade", "estado", "observacoes",
+            "nome_completo",
+            "cpf",
+            "numero",
+            "email",
+            "data_nascimento",
+            "cep",
+            "cidade",
+            "estado",
+            "observacoes",
         ]
         for campo in campos:
             valor = dados.get(campo)
@@ -92,6 +125,7 @@ def deletar_pessoa(request, id):
 # VIEWS FIXAS (Agendamento, Procedimento)
 # ----------------------------------------------------------------------
 
+
 @login_required
 def cadastro_agendamento(request):
     return render(request, "agendamento.html")
@@ -116,6 +150,7 @@ def editar_procedimento(request):
 # VIEWS REFATORADAS COM TEMPLATE METHOD (FUNCIONÁRIO)
 # ----------------------------------------------------------------------
 
+
 @login_required
 def lista_funcionario(request):
     funcionarios = Funcionario.objects.select_related("pessoa").all()
@@ -124,9 +159,14 @@ def lista_funcionario(request):
 
 class FuncionarioView(BaseModelFormView):
     # Métodos Abstratos
-    def get_model_class(self): return Funcionario
-    def get_template_name(self): return "cadastro_funcionario.html"
-    def get_success_url(self): return "lista_funcionario"
+    def get_model_class(self):
+        return Funcionario
+
+    def get_template_name(self):
+        return "cadastro_funcionario.html"
+
+    def get_success_url(self):
+        return "lista_funcionario"
 
     # Hook: Aplica dados (incluindo FK)
     def clean_and_apply_data(self, request, instance):
@@ -135,16 +175,16 @@ class FuncionarioView(BaseModelFormView):
         pessoa_id = dados.get("pessoa")
         if pessoa_id:
             instance.pessoa = Pessoa.objects.get(id=pessoa_id)
-        
+
         campos = ["cargo", "salario", "pis", "entrada", "saida"]
         for campo in campos:
             valor = dados.get(campo)
             setattr(instance, campo, valor if valor != "" else None)
-            
+
         return instance
 
     # hook pós-save: atualiza o tipo da pessoa (lógica original)
-    def AFTER_SAVE(self, request, instance):
+    def after_save(self, request, instance):  # CORREÇÃO: Assinatura correta
         if instance.pessoa:
             pessoa = instance.pessoa
             pessoa.tipo = "FUNCIONARIO"
@@ -153,15 +193,17 @@ class FuncionarioView(BaseModelFormView):
     # hook: insere as pessoas disponíveis no contexto
     def get_context_data(self, request, instance=None, **kwargs):
         context = super().get_context_data(request, instance=instance, **kwargs)
-        
+
         funcionario_id = instance.id if instance and instance.pk else None
-        pessoas_ocupadas_ids = Funcionario.objects.exclude(id=funcionario_id).values_list("pessoa_id", flat=True)
-        
+        pessoas_ocupadas_ids = Funcionario.objects.exclude(
+            id=funcionario_id
+        ).values_list("pessoa_id", flat=True)
+
         context["pessoas"] = Pessoa.objects.exclude(id__in=pessoas_ocupadas_ids)
-        
+
         if instance and instance.pk:
             context["funcionario"] = instance
-            
+
         return context
 
 
@@ -170,13 +212,14 @@ cadastro_funcionario = base_view_wrapper(FuncionarioView)
 
 class FuncionarioEditView(FuncionarioView):
     def get_object(self, **kwargs):
-        pk = kwargs.get('id')
+        pk = kwargs.get("id")
         if pk:
             try:
                 return self.get_model_class().objects.get(id=pk)
             except self.get_model_class().DoesNotExist:
                 return None
         return None
+
 
 editar_funcionario = base_view_wrapper(FuncionarioEditView)
 
@@ -191,9 +234,9 @@ def deletar_funcionario(request, id):
 
 
 # ----------------------------------------------------------------------
-# VIEWS REFETORADAS COM TEMPLATE METHOD (Usuário)
-# Substitui a função antiga 'cadastro_usuario'
+# VIEWS REFETORADAS COM TEMPLATE METHOD (Usuário) - CORRIGIDA E FINALIZADA
 # ----------------------------------------------------------------------
+
 
 @login_required
 def lista_usuario(request):
@@ -206,9 +249,14 @@ class UsuarioView(BaseModelFormView):
     """Implementa o Template Method para Cadastro de Usuários e vínculo com Pessoa."""
 
     # Métodos Abstratos
-    def get_model_class(self): return get_user_model()
-    def get_template_name(self): return "cadastro_usuario.html"
-    def get_success_url(self): return "alguma_view_de_sucesso" 
+    def get_model_class(self):
+        return get_user_model()
+
+    def get_template_name(self):
+        return "cadastro_usuario.html"
+
+    def get_success_url(self):
+        return "alguma_view_de_sucesso"
 
     # hook principal: salva e vincula aqui
     def clean_and_apply_data(self, request, user_instance):
@@ -217,45 +265,45 @@ class UsuarioView(BaseModelFormView):
         password = dados.get("password")
         email = dados.get("email")
         pessoa_id = dados.get("pessoa_id")
-        
+
         User = get_user_model()
-        
+
         # lógica de try/except e criação/vínculo mantidas aqui
         try:
             user = User.objects.create_user(
-                username=username, 
-                password=password, 
-                email=email
+                username=username, password=password, email=email
             )
-            
-            pessoa = Pessoa.objects.get(id=pessoa_id)
-            pessoa.usuario = user
-            pessoa.save()
-            
-            messages.success(request, 'Usuário cadastrado com sucesso e vinculado à pessoa!')
-            
-        except Pessoa.DoesNotExist:
-            messages.error(request, 'Pessoa não encontrada.')
-        # levanta a exceção para interromper o dispatch e evitar redirecionamento/salvamento incorreto
 
+            pessoa = Pessoa.objects.get(id=pessoa_id)
+            # CORREÇÃO CRÍTICA: Mudar de 'pessoa.usuario' para 'pessoa.user'
+            # (para casar com o models.py)
+            pessoa.user = user
+            pessoa.save()
+
+            messages.success(
+                request, "Usuário cadastrado com sucesso e vinculado à pessoa!"
+            )
+
+        except Pessoa.DoesNotExist:
+            messages.error(request, "Pessoa não encontrada.")
             raise
         except Exception as e:
-            messages.error(request, f'Erro ao cadastrar: {str(e)}')
-            raise 
-        
-        return user_instance
-        
-    # hook pós-save: sobrescreve salvamento padrão do template method
+            messages.error(request, f"Erro ao cadastrar: {str(e)}")
+            raise
 
-    def AFTER_SAVE(self, request, instance):
-        pass 
-        
+        return user_instance
+
+    # hook pós-save: sobrescreve salvamento padrão do template method
+    def after_save(self, request, instance):  # CORREÇÃO: Assinatura correta
+        pass
+
     # Hook Contexto: Adiciona Pessoas disponíveis para vínculo
     def get_context_data(self, request, instance=None, **kwargs):
         context = super().get_context_data(request, instance=instance, **kwargs)
-        # Filtra Pessoas que ainda não estão vinculadas a um usuário
-        context["pessoas"] = Pessoa.objects.filter(usuario__isnull=True)
+        # CORREÇÃO CRÍTICA: Mudar de 'usuario__isnull' para 'user__isnull'
+        context["pessoas"] = Pessoa.objects.filter(user__isnull=True)
         return context
+
 
 # Substitui a função 'cadastro_usuario' antiga
 cadastro_usuario = base_view_wrapper(UsuarioView)
