@@ -62,22 +62,18 @@ Essa implementação torna o código mais organizado, fácil de manter e reaprov
 
 ### 🔹 Estrutura da Implementação
 
-```python
+python
 gerencia/
 ├── base_views.py # Classe Abstrata (BaseModelFormView) define o fluxo principal (Template Method).
 └── views.py    # Subclasses (PessoaView, FuncionarioView, etc.) implementam os hooks específicos.
----
 
 ### 📘 Explicação do Padrão
 
 Essa implementação segue o **padrão de design comportamental Template Method**, que define o esqueleto de um algoritmo na superclasse, mas permite que as subclasses substituam etapas específicas sem alterar sua estrutura geral.
 
-
 No contexto do projeto:
 - A classe `BaseModelFormView` define métodos como `get_model_class()`, `get_template_name()` e `get_success_url()` (abstratos).
 - As subclasses (`PessoaView`, `FuncionarioView`, `UsuarioView`) implementam esses métodos, mantendo o mesmo fluxo geral de criação/edição.
-
----
 
 ### 📊 Diagrama UML Simplificado
 
@@ -90,4 +86,3 @@ Um diagrama UML foi criado para representar visualmente **a herança da classe a
 - Redução de duplicidade 
 - Facilidade para criar novas views seguindo o mesmo modelo das subclasses. 
 
----
