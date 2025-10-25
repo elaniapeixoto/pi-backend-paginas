@@ -62,9 +62,10 @@ Essa implementação torna o código mais organizado, fácil de manter e reaprov
 
 ### 🔹 Estrutura da Implementação
 
-- `base_views.py` → contém a **classe abstrata** `BaseModelFormView`, que define o fluxo principal (template) com métodos abstratos a serem sobrescritos.  
-- `views.py` → contém as **subclasses concretas** (`PessoaView`, `FuncionarioView`, `UsuarioView`), que implementam os métodos específicos de cada entidade.
-
+```python
+gerencia/
+├── base_views.py # Classe Abstrata (BaseModelFormView) define o fluxo principal (Template Method).
+└── views.py    # Subclasses (PessoaView, FuncionarioView, etc.) implementam os hooks específicos.
 ---
 
 ### 📘 Explicação do Padrão
