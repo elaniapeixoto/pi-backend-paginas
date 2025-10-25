@@ -51,3 +51,42 @@ Todos os membros estão contribuindo por meio de commits individuais no GitHub.
 Para acessar o login 
 -Usuario = admin
 -Senha = admin
+
+
+## 🧠 Atualização – Implementação do Padrão Template Method  
+📅 **Data:** 24 de outubro de 2025  
+
+Foi implementado o **padrão de projeto Template Method** no backend para padronizar o fluxo de criação e edição das entidades principais (**Pessoa**, **Funcionário** e **Usuário**) nas views do Django.  
+
+Essa implementação torna o código mais organizado, fácil de manter e reaproveitar.
+
+### 🔹 Estrutura da Implementação
+
+- `base_views.py` → contém a **classe abstrata** `BaseModelFormView`, que define o fluxo principal (template) com métodos abstratos a serem sobrescritos.  
+- `views.py` → contém as **subclasses concretas** (`PessoaView`, `FuncionarioView`, `UsuarioView`), que implementam os métodos específicos de cada entidade.
+
+---
+
+### 📘 Explicação do Padrão
+
+Essa implementação segue o **padrão de design comportamental Template Method**, que define o esqueleto de um algoritmo na superclasse, mas permite que as subclasses substituam etapas específicas sem alterar sua estrutura geral.
+
+
+No contexto do projeto:
+- A classe `BaseModelFormView` define métodos como `get_model_class()`, `get_template_name()` e `get_success_url()` (abstratos).
+- As subclasses (`PessoaView`, `FuncionarioView`, `UsuarioView`) implementam esses métodos, mantendo o mesmo fluxo geral de criação/edição.
+
+---
+
+### 📊 Diagrama UML Simplificado
+
+Um diagrama UML foi criado para representar visualmente **a herança da classe abstrata e a relação entre as subclasses**, incluindo associações como a vinculação de `Funcionario` e `Usuario` com `Pessoa`.  
+
+
+### ✅ Benefícios
+
+- Código mais organizado, reutilizável e fácil de manter  
+- Redução de duplicidade 
+- Facilidade para criar novas views seguindo o mesmo modelo das subclasses. 
+
+---
