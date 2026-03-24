@@ -115,6 +115,6 @@ Foi criado um diagrama UML representando:
 
 ## Observações
 
-Este projeto está sendo desenvolvido em grupo como atividade avaliativa da disciplina de Programação Back-end.
+Este projeto está sendo desenvolvido em grupo como atividade avaliativa da disciplina de Programação Back-end e Padrões de Projetos.
 
 Todos os integrantes contribuem com commits individuais no GitHub.
