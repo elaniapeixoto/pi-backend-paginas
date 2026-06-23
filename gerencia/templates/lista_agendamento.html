@@ -1,0 +1,39 @@
+{% extends 'gerencia/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h1 class="h3 m-0">Agendamentos</h1>
+    <a href="{% url 'cadastro_agendamento' %}" class="btn btn-success">Novo agendamento</a>
+</div>
+
+<table class="table table-bordered table-striped bg-white">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Horario</th>
+            <th>Pessoa</th>
+            <th>Procedimento</th>
+            <th>Acoes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for agendamento in agendamentos %}
+            <tr>
+                <td>{{ agendamento.data_hora|date:"d/m/Y" }}</td>
+                <td>{{ agendamento.data_hora|date:"H:i" }}</td>
+                <td>{{ agendamento.pessoa|default:"Cliente nao informado" }}</td>
+                <td>{{ agendamento.procedimento }}</td>
+                <td class="table-actions">
+                    <a class="btn btn-sm btn-primary" href="{% url 'editar_agendamento' agendamento.id %}">Editar</a>
+                    <form action="{% url 'deletar_agendamento' agendamento.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deseja deletar este agendamento?');">Deletar</button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="text-center">Nenhum agendamento cadastrado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

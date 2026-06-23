@@ -1,18 +1,19 @@
 {% extends "visitante/base.html" %}
 
-{% load static %}
-
-{% block titulo %} Sobre {% endblock %}
+{% block title %}Sobre{% endblock %}
 
 {% block content %}
-
-{% comment %}
- colocar texto sobre o espaço ou a empresaria 
- pensei no texto do documento de requisitos
- da pra colocar tambem o problema que estamaos resolvendo
- em vez do sobre da empresa, como e pra apresentar
-{% endcomment %}
- 
-<h1 align='center'>AAA<h1>
-
+<section class="content p-4">
+    <h1 class="h3">Sobre o sistema</h1>
+    <p>
+        O Estetica na Palma da Mao foi desenvolvido para apoiar a rotina de um
+        salao de beleza, reunindo cadastro de pessoas, funcionarios, locadores,
+        procedimentos, agendamentos e controle de caixa em uma unica area
+        administrativa.
+    </p>
+    <p class="mb-0">
+        Na area publica, clientes podem consultar procedimentos ofertados e
+        visualizar horarios ja reservados antes de entrar em contato com o salao.
+    </p>
+</section>
 {% endblock %}

@@ -1,54 +1,47 @@
-{% extends "base.html" %}
+{% extends "gerencia/base.html" %}
 
-{% load static %}
-
-{% block title %} Agendamentos {% endblock %}
+{% block title %}Cadastro de agendamento{% endblock %}
 
 {% block content %}
+<h1 class="h3 text-center mb-3">{% if agendamento %}Editar{% else %}Cadastrar{% endif %} agendamento</h1>
 
-<body>
-    <form id="agendamentoForm">
-        <table class='content w-50'align="center">
-            
-            <tr>
-                <th><label for="nome">Nome:</label></th>
-                <td colspan="2"><input type="text" id="nome" name="nome" size="30"></td>
-            </tr>
-            <tr>
-                <th><label for="proced">Procedimento:</label></th>
-                <td colspan="2">
-                    <select name="proced" id="proced">
-                        <option value="" selected disabled>Selecione o procedimento desejado</option>
-
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="prof">Profissional:</label></th>
-                <td><input type="checkbox" name="prof" value="Pamela">Pamela</td>
-                <td><input type="checkbox" name="prof" value="Ana Paula">Ana Paula
-            </tr>
-
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td><input type="checkbox" name="prof" value="Carline">Carline</td>
-            </tr>
-            <tr>
-                <th><label for="data_hora">Data e Hora desejada:</label></th>
-                <td colspan="2"><input type="datetime-local" id="data_hora" name="data_hora">
-                </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td><input type="submit" value="Agendar"></td>
-                <td><input type="reset" value="Cancelar"></td>
-            </tr>
-
-        </table>
-
-    </form>
-
-</body>
-
+<form method="post" action="{% if agendamento %}{% url 'editar_agendamento' agendamento.id %}{% else %}{% url 'cadastro_agendamento' %}{% endif %}">
+    {% csrf_token %}
+    <table class="content w-50" align="center">
+        <tr>
+            <th><label for="pessoa">Pessoa</label></th>
+            <td>
+                <select name="pessoa" id="pessoa">
+                    <option value="">Cliente nao informado</option>
+                    {% for pessoa in pessoas %}
+                        <option value="{{ pessoa.id }}" {% if agendamento and agendamento.pessoa.id == pessoa.id %}selected{% endif %}>{{ pessoa.nome_completo }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="procedimento">Procedimento *</label></th>
+            <td>
+                <select name="procedimento" id="procedimento" required>
+                    <option value="">Selecione</option>
+                    {% for procedimento in procedimentos %}
+                        <option value="{{ procedimento.id }}" {% if agendamento and agendamento.procedimento.id == procedimento.id %}selected{% endif %}>{{ procedimento.procedimento }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="data_hora">Data e hora *</label></th>
+            <td><input type="datetime-local" name="data_hora" id="data_hora" required value="{{ agendamento.data_hora|date:'Y-m-d\\TH:i' }}"></td>
+        </tr>
+        <tr>
+            <th><label for="observacoes">Observacoes</label></th>
+            <td><textarea name="observacoes" id="observacoes" rows="4">{{ agendamento.observacoes|default_if_none:'' }}</textarea></td>
+        </tr>
+    </table>
+    <div class="text-center mt-3">
+        <a href="{% url 'lista_agendamento' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Salvar</button>
+    </div>
+</form>
 {% endblock %}

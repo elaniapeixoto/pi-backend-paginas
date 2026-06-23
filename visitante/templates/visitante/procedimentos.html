@@ -1,0 +1,27 @@
+{% extends "visitante/base.html" %}
+
+{% block title %}Procedimentos{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-3">Procedimentos ofertados</h1>
+<table class="table table-bordered table-striped bg-white">
+    <thead>
+        <tr>
+            <th>Procedimento</th>
+            <th>Valor</th>
+            <th>Tempo medio</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for procedimento in procedimentos %}
+            <tr>
+                <td>{{ procedimento.procedimento }}</td>
+                <td>R$ {{ procedimento.valor|floatformat:2 }}</td>
+                <td>{{ procedimento.tempo_medio|default:"-" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3" class="text-center">Nenhum procedimento cadastrado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

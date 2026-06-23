@@ -5,7 +5,8 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    # path('/procedimentos'), blocos ou lista de procedimentos disponiveis
+    path("procedimentos/", views.procedimentos, name="procedimentos_visitante"),
+    path("agenda/", views.agenda, name="agenda_visitante"),
     path("sobre/", views.sobre, name="sobre"),
     path(
         "login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"

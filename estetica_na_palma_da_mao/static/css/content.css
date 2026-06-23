@@ -1,6 +1,102 @@
+html,
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: "Josefin Sans", Arial, sans-serif;
+    background: #fffaf0;
+}
+
+main {
+    flex: 1;
+}
+
+a {
+    color: #24171a;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #6c3241;
+}
+
 .content {
-    background-color: #F8D36F;
-    border-style: solid;
-    border-color: #6C3241;
-    border-width: 2px;
+    background-color: #f8d36f;
+    border: 2px solid #6c3241;
+}
+
+.admin-menu,
+.public-menu {
+    width: min(1120px, 94%);
+    border: 2px solid #6c3241;
+    background-color: #d2b048;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 8px;
+}
+
+.admin-menu a,
+.public-menu a,
+.admin-menu button,
+.public-menu button {
+    background: transparent;
+    border: 0;
+    color: #24171a;
+    font-weight: 700;
+    padding: 6px 8px;
+}
+
+.admin-menu form,
+.public-menu form {
+    margin: 0;
+}
+
+.panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.metric {
+    background: #f8d36f;
+    border: 2px solid #6c3241;
+    padding: 16px;
+    text-align: center;
+}
+
+.metric strong {
+    display: block;
+    font-size: 1.8rem;
+}
+
+.site-footer {
+    width: 100%;
+    background-color: #d2b048;
+    border-top: 2px solid #6c3241;
+    text-align: center;
+    padding: 8px;
+    align-self: flex-end;
+}
+
+.site-footer p {
+    margin: 4px;
+}
+
+.table-actions {
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    header img:last-child {
+        width: 230px;
+    }
+
+    .content,
+    .table {
+        width: 100% !important;
+    }
 }

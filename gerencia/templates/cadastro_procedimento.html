@@ -1,50 +1,29 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "gerencia/base.html" %}
 
 {% block title %}Cadastro de procedimentos{% endblock %}
 
 {% block content %}
-<form method="post" action="{% url 'cadastrar_procedimento' %}">
+<h1 class="h3 text-center mb-3">{% if procedimento %}Editar{% else %}Cadastrar{% endif %} procedimento</h1>
+
+<form method="post" action="{% if procedimento %}{% url 'editar_procedimento' procedimento.id %}{% else %}{% url 'cadastro_procedimento' %}{% endif %}">
     {% csrf_token %}
-
-    <table style="background-color: #F8D36F; width: 50%; border: 2px solid #6C3241;" align="center">
+    <table class="content w-50" align="center">
         <tr>
-            <th align="left"><label for="nomeP">Nome do procedimento:</label></th>
-            <td><input type="text" id="nomeP" name="nomeP" required></td>
+            <th><label for="procedimento">Procedimento *</label></th>
+            <td><input type="text" id="procedimento" name="procedimento" required value="{{ procedimento.procedimento|default_if_none:'' }}"></td>
         </tr>
-
         <tr>
-            <th align="left"><label>Qual profissional irá realizar?</label></th>
-            <td>
-                <input type="radio" id="Pamela" name="profissional" value="Pamela">
-                <label for="Pamela">Pamela</label>
-
-                <input type="radio" id="Carline" name="profissional" value="Carline">
-                <label for="Carline">Carline</label>
-
-                <input type="radio" id="AnaPaula" name="profissional" value="Ana Paula">
-                <label for="AnaPaula">Ana Paula</label>
-            </td>
+            <th><label for="valor">Valor *</label></th>
+            <td><input type="number" step="0.01" min="0" id="valor" name="valor" required value="{{ procedimento.valor|default_if_none:'' }}"></td>
         </tr>
-
         <tr>
-            <th align="left"><label for="valor">Qual valor do procedimento?</label></th>
-            <td><input type="text" id="valor" name="valor" required></td>
-        </tr>
-
-        <tr>
-            <th><label for="tempo">Qual tempo médio do procedimento?</label></th>
-            <td><input type="text" id="tempo" name="tempo" required></td>
-        </tr>
-
-        <tr>
-            <td align="center">
-                <button type="reset" class="btn btn-danger">Limpar</button>
-            </td>
-            <td align="center">
-                <button type="submit" class="btn btn-success">Salvar</button>
-            </td>
+            <th><label for="tempo_medio">Tempo medio</label></th>
+            <td><input type="time" id="tempo_medio" name="tempo_medio" value="{% if procedimento.tempo_medio %}{{ procedimento.tempo_medio }}{% endif %}"></td>
         </tr>
     </table>
+    <div class="text-center mt-3">
+        <a href="{% url 'lista_procedimentos' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Salvar</button>
+    </div>
 </form>
 {% endblock %}

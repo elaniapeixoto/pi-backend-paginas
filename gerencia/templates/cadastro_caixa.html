@@ -1,0 +1,43 @@
+{% extends "gerencia/base.html" %}
+
+{% block title %}Cadastro de caixa{% endblock %}
+
+{% block content %}
+<h1 class="h3 text-center mb-3">{% if movimento %}Editar{% else %}Cadastrar{% endif %} movimento de caixa</h1>
+
+<form method="post" action="{% if movimento %}{% url 'editar_caixa' movimento.id %}{% else %}{% url 'cadastro_caixa' %}{% endif %}">
+    {% csrf_token %}
+    <table class="content w-50" align="center">
+        <tr>
+            <th><label for="tipo">Tipo *</label></th>
+            <td>
+                <select name="tipo" id="tipo" required>
+                    {% for valor, nome in tipos %}
+                        <option value="{{ valor }}" {% if movimento and movimento.tipo == valor %}selected{% endif %}>{{ nome }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="descricao">Descricao *</label></th>
+            <td><input type="text" name="descricao" id="descricao" required value="{{ movimento.descricao|default_if_none:'' }}"></td>
+        </tr>
+        <tr>
+            <th><label for="valor">Valor *</label></th>
+            <td><input type="number" step="0.01" min="0" name="valor" id="valor" required value="{{ movimento.valor|default_if_none:'' }}"></td>
+        </tr>
+        <tr>
+            <th><label for="data">Data *</label></th>
+            <td><input type="date" name="data" id="data" required value="{{ movimento.data|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <th><label for="observacoes">Observacoes</label></th>
+            <td><textarea name="observacoes" id="observacoes" rows="4">{{ movimento.observacoes|default_if_none:'' }}</textarea></td>
+        </tr>
+    </table>
+    <div class="text-center mt-3">
+        <a href="{% url 'lista_caixa' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Salvar</button>
+    </div>
+</form>
+{% endblock %}

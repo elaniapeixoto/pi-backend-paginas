@@ -1,25 +1,68 @@
 {% extends "visitante/base.html" %}
 
-{% load static %}
-
-{% block titulo %} 
-
-
-{% endblock %}
+{% block title %}Inicio{% endblock %}
 
 {% block content %}
+<section class="content p-4 mb-4 text-center">
+    <h1 class="h3">Bem-vindo ao Espaco Integrativo Pamela Azambuja</h1>
+    <p class="mb-0">Consulte procedimentos disponiveis e acompanhe os horarios ja reservados.</p>
+</section>
 
-    <table
-        style="background-color: #F8D36F; width: 50%; border-style: solid; border-color:  #6C3241; border-width: 2px; text-align: center;"
-        align="center">
-        <tr>
-            <td>
-                <h2>Bem vindo!</h2>
-            </td>
-        </tr>
+<div class="row g-3">
+    <section class="col-lg-6">
+        <div class="content p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h2 class="h5 m-0">Procedimentos</h2>
+                <a href="{% url 'procedimentos_visitante' %}" class="btn btn-sm btn-success">Ver todos</a>
+            </div>
+            <table class="table table-sm table-bordered bg-white mb-0">
+                <thead>
+                    <tr>
+                        <th>Procedimento</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for procedimento in procedimentos|slice:":5" %}
+                        <tr>
+                            <td>{{ procedimento.procedimento }}</td>
+                            <td>R$ {{ procedimento.valor|floatformat:2 }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="2" class="text-center">Nenhum procedimento cadastrado.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-
-    </table>
-
-
+    <section class="col-lg-6">
+        <div class="content p-3 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h2 class="h5 m-0">Horarios reservados</h2>
+                <a href="{% url 'agenda_visitante' %}" class="btn btn-sm btn-success">Ver agenda</a>
+            </div>
+            <table class="table table-sm table-bordered bg-white mb-0">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Horario</th>
+                        <th>Procedimento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for agendamento in proximos_agendamentos %}
+                        <tr>
+                            <td>{{ agendamento.data_hora|date:"d/m/Y" }}</td>
+                            <td>{{ agendamento.data_hora|date:"H:i" }}</td>
+                            <td>{{ agendamento.procedimento }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="3" class="text-center">Nenhum horario reservado.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
 {% endblock %}

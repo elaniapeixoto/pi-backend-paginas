@@ -1,16 +1,42 @@
 {% extends 'gerencia/base.html' %}
 
-{% load static %}
-
-{% block title %}
-Bem vindo 
-{% endblock %}
+{% block title %}Painel administrativo{% endblock %}
 
 {% block content %}
+<h1 class="h3 text-center mb-4">Painel administrativo</h1>
 
-<div align='center'>
-    <p>Agenda</p>
-    agenda ficticia
-</div>
+<section class="panel-grid mb-4">
+    <div class="metric"><span>Pessoas</span><strong>{{ total_pessoas }}</strong></div>
+    <div class="metric"><span>Funcionarios</span><strong>{{ total_funcionarios }}</strong></div>
+    <div class="metric"><span>Locadores</span><strong>{{ total_locadores }}</strong></div>
+    <div class="metric"><span>Procedimentos</span><strong>{{ total_procedimentos }}</strong></div>
+    <div class="metric"><span>Saldo do caixa</span><strong>R$ {{ saldo_caixa|floatformat:2 }}</strong></div>
+</section>
 
+<section class="content p-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+        <h2 class="h5 m-0">Agendamentos de hoje</h2>
+        <a class="btn btn-success btn-sm" href="{% url 'cadastro_agendamento' %}">Novo agendamento</a>
+    </div>
+    <table class="table table-sm table-bordered bg-white mb-0">
+        <thead>
+            <tr>
+                <th>Horario</th>
+                <th>Pessoa</th>
+                <th>Procedimento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for agendamento in agendamentos_hoje %}
+                <tr>
+                    <td>{{ agendamento.data_hora|date:"H:i" }}</td>
+                    <td>{{ agendamento.pessoa|default:"Cliente nao informado" }}</td>
+                    <td>{{ agendamento.procedimento }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3" class="text-center">Nenhum agendamento para hoje.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
 {% endblock %}

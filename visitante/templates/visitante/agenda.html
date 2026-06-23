@@ -1,0 +1,29 @@
+{% extends "visitante/base.html" %}
+
+{% block title %}Agenda{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-3">Horarios reservados</h1>
+<p>Os horarios abaixo ja estao ocupados. Para agendar, entre em contato pelo telefone do salao.</p>
+
+<table class="table table-bordered table-striped bg-white">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Horario</th>
+            <th>Procedimento</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for agendamento in agendamentos %}
+            <tr>
+                <td>{{ agendamento.data_hora|date:"d/m/Y" }}</td>
+                <td>{{ agendamento.data_hora|date:"H:i" }}</td>
+                <td>{{ agendamento.procedimento }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3" class="text-center">Nenhum horario reservado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,44 +1,41 @@
 {% extends 'gerencia/base.html' %}
 
-{% load static %}
-
 {% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h1 class="h3 m-0">Pessoas</h1>
+    <a href="{% url 'cadastro_pessoa' %}" class="btn btn-success">Nova pessoa</a>
+</div>
 
-<table class="content w-50 " align='center'>
-    <thead align='center'>
-        <tr class=''>
+<table class="table table-bordered table-striped bg-white">
+    <thead>
+        <tr>
             <th>ID</th>
             <th>Nome</th>
             <th>CPF</th>
-            <th>Data de Nascimento</th>
-            <th>deletar</th>
-            
+            <th>Contato</th>
+            <th>Tipo</th>
+            <th>Acoes</th>
         </tr>
     </thead>
-    <tbody align='center'>
+    <tbody>
         {% for pessoa in pessoas %}
-            <tr class='border-top border-success'>
-                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.id }}</a></td>
-                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.nome_completo }}</a></td>
-                <td><a href="{% url 'editar_pessoa' pessoa.id %}">{{ pessoa.cpf }}</a></td>
-                <td><a href="{% url 'editar_pessoa' pessoa.id %}">
-                    {% if pessoa.numero %} {{ pessoa.numero }} {% else %} - {% endif %}
-                </a></td>
-                <td>
-                <form action="{% url 'deletar_pessoa' pessoa.id %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja deletar?');">
-                        Deletar
-                    </button>
-                </form>
-            </td>
+            <tr>
+                <td>{{ pessoa.id }}</td>
+                <td>{{ pessoa.nome_completo }}</td>
+                <td>{{ pessoa.cpf }}</td>
+                <td>{{ pessoa.numero|default:"-" }}</td>
+                <td>{{ pessoa.get_tipo_display|default:"-" }}</td>
+                <td class="table-actions">
+                    <a class="btn btn-sm btn-primary" href="{% url 'editar_pessoa' pessoa.id %}">Editar</a>
+                    <form action="{% url 'deletar_pessoa' pessoa.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</button>
+                    </form>
+                </td>
             </tr>
         {% empty %}
-            <tr>
-                <td colspan="5" align='center'>Nenhuma pessoa cadastrada.</td>
-            </tr>
+            <tr><td colspan="6" class="text-center">Nenhuma pessoa cadastrada.</td></tr>
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}

@@ -1,0 +1,40 @@
+{% extends "gerencia/base.html" %}
+
+{% block title %}Cadastro de locador{% endblock %}
+
+{% block content %}
+<h1 class="h3 text-center mb-3">{% if locador %}Editar{% else %}Cadastrar{% endif %} locador</h1>
+
+<form method="post" action="{% if locador %}{% url 'editar_locador' locador.id %}{% else %}{% url 'cadastro_locador' %}{% endif %}">
+    {% csrf_token %}
+    <table class="content w-50" align="center">
+        <tr>
+            <th><label for="pessoa">Pessoa *</label></th>
+            <td>
+                <select name="pessoa" id="pessoa" required>
+                    <option value="">Selecione</option>
+                    {% for pessoa in pessoas %}
+                        <option value="{{ pessoa.id }}" {% if locador and locador.pessoa.id == pessoa.id %}selected{% endif %}>{{ pessoa.nome_completo }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="valor_aluguel">Valor do aluguel *</label></th>
+            <td><input type="number" step="0.01" min="0" name="valor_aluguel" id="valor_aluguel" required value="{{ locador.valor_aluguel|default_if_none:'' }}"></td>
+        </tr>
+        <tr>
+            <th><label for="inicio_contrato">Inicio do contrato *</label></th>
+            <td><input type="date" name="inicio_contrato" id="inicio_contrato" required value="{{ locador.inicio_contrato|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <th><label for="fim_contrato">Fim do contrato *</label></th>
+            <td><input type="date" name="fim_contrato" id="fim_contrato" required value="{{ locador.fim_contrato|date:'Y-m-d' }}"></td>
+        </tr>
+    </table>
+    <div class="text-center mt-3">
+        <a href="{% url 'lista_locador' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Salvar</button>
+    </div>
+</form>
+{% endblock %}

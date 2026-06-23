@@ -1,0 +1,39 @@
+{% extends 'gerencia/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h1 class="h3 m-0">Locadores</h1>
+    <a href="{% url 'cadastro_locador' %}" class="btn btn-success">Novo locador</a>
+</div>
+
+<table class="table table-bordered table-striped bg-white">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Aluguel</th>
+            <th>Inicio</th>
+            <th>Fim</th>
+            <th>Acoes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for locador in locadores %}
+            <tr>
+                <td>{{ locador.pessoa.nome_completo }}</td>
+                <td>R$ {{ locador.valor_aluguel|floatformat:2 }}</td>
+                <td>{{ locador.inicio_contrato|date:"d/m/Y" }}</td>
+                <td>{{ locador.fim_contrato|date:"d/m/Y" }}</td>
+                <td class="table-actions">
+                    <a class="btn btn-sm btn-primary" href="{% url 'editar_locador' locador.id %}">Editar</a>
+                    <form action="{% url 'deletar_locador' locador.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deseja deletar este locador?');">Deletar</button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="text-center">Nenhum locador cadastrado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
